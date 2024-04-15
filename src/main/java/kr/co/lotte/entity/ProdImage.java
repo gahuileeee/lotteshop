@@ -16,8 +16,8 @@ public class ProdImage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int iNo;
     private int pNo;
-    private String oName;
-    private String sName;
+    private String Image240;
+    private String Image750;
 
 
 }

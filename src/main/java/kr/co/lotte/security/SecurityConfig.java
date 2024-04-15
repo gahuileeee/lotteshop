@@ -37,6 +37,7 @@ public class SecurityConfig {
         httpSecurity.authorizeHttpRequests(authorize -> authorize
                 .requestMatchers("/").permitAll()
                 .requestMatchers("/article/**").permitAll()
+                .requestMatchers("/product/**").permitAll()
                 .requestMatchers("/market/list").permitAll()
                 .requestMatchers("/market/view").permitAll()
                 .requestMatchers("/market/**").authenticated()

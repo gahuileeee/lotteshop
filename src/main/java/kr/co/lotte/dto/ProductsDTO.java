@@ -24,8 +24,8 @@ public class ProductsDTO {
     private MultipartFile multImage2;
     private MultipartFile multImage3;
 
-    private String image1;
-    private String image2;
+    private String image1;//240 제목
+    private String image2;//750 내용
     private String image3;
     private int point;
     private String etc;

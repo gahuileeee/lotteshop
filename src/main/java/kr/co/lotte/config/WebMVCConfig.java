@@ -1,5 +1,6 @@
 package kr.co.lotte.config;
 
+import groovy.util.logging.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -8,6 +9,9 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import java.io.Console;
+
+@Slf4j
 @Configuration
 public class WebMVCConfig implements WebMvcConfigurer {
 
@@ -19,16 +23,20 @@ public class WebMVCConfig implements WebMvcConfigurer {
     @Value("${file.upload.path}")
     private String resourcePath;
 
+
+
 /*
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new AppInfoIntercepter(appInfo));
     }
 */
+
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/static/admin/**").addResourceLocations("classpath:/admin/");
-        registry.addResourceHandler("/uploads/**").addResourceLocations(resourceLoader.getResource(resourcePath));
+        registry.addResourceHandler("/static/product/**").addResourceLocations("classpath:/product/");
+        registry.addResourceHandler("/uploads/**").addResourceLocations("file:"+resourcePath);
 
     }
 }
