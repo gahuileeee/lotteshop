@@ -191,9 +191,9 @@
                 <a href="../index.html" class="logo"><img src="../images/admin_logo.png" alt="admin_logo"/></a>
                 <p>
                     <span>홍길동님 반갑습니다.</span>
-                    <a href="#">HOME |</a>
-                    <a href="#">로그아웃 |</a>
-                    <a href="#">고객센터</a>
+                    <a th:href="@{#}">HOME |</a>
+                    <a th:href="@{#}">로그아웃 |</a>
+                    <a th:href="@{#}">고객센터</a>
                 </p>
             </div>
         </header>
@@ -202,50 +202,50 @@
                 <!-- Global Navigation Bar -->
                 <ul id="gnb">
                     <li>
-                        <a href="#"><i class="fa fa-cogs" aria-hidden="true"></i>환경설정</a>
+                        <a th:href="@{#}"><i class="fa fa-cogs" aria-hidden="true"></i>환경설정</a>
                         <ol>
-                            <li><a href="#">기본환경설정</a></li>
-                            <li><a href="#">배너관리</a></li>
+                            <li><a th:href="@{#}">기본환경설정</a></li>
+                            <li><a th:href="@{#}">배너관리</a></li>
                         </ol>
                     </li>
                     <li>
-                        <a href="#"><i class="fas fa-store" aria-hidden="true"></i>상점관리</a>
+                        <a th:href="@{#}"><i class="fas fa-store" aria-hidden="true"></i>상점관리</a>
                         <ol>
-                            <li><a href="#">판매자현황</a></li>
-                            <li><a href="#">재고관리</a></li>
+                            <li><a th:href="@{#}">판매자현황</a></li>
+                            <li><a th:href="@{#}">재고관리</a></li>
                         </ol>
                     </li>
                     <li>
-                        <a href="#"><i class="fa fa-users" aria-hidden="true"></i>회원관리</a>
+                        <a th:href="@{#}"><i class="fa fa-users" aria-hidden="true"></i>회원관리</a>
                         <ol>
-                            <li><a href="#">회원현황</a></li>
-                            <li><a href="#">포인트관리</a></li>
-                            <li><a href="#">비회원관리</a></li>
-                            <li><a href="#">접속자집계</a></li>
+                            <li><a th:href="@{#}">회원현황</a></li>
+                            <li><a th:href="@{#}">포인트관리</a></li>
+                            <li><a th:href="@{#}">비회원관리</a></li>
+                            <li><a th:href="@{#}">접속자집계</a></li>
                         </ol>
                     </li>
                     <li>
-                        <a href="#"><i class="fas fa-box-open" aria-hidden="true"></i>상품관리</a>
+                        <a th:href="@{#}"><i class="fas fa-box-open" aria-hidden="true"></i>상품관리</a>
                         <ol>
-                            <li><a href="#">상품현황</a></li>
-                            <li><a href="#">상품등록</a></li>
-                            <li><a href="#">재고관리</a></li>
+                            <li><a th:href="@{#}">상품현황</a></li>
+                            <li><a th:href="@{#}">상품등록</a></li>
+                            <li><a th:href="@{#}">재고관리</a></li>
                         </ol>
                     </li>
                     <li>
-                        <a href="#"><i class="fa fa-credit-card" aria-hidden="true"></i>주문관리</a>
+                        <a th:href="@{#}"><i class="fa fa-credit-card" aria-hidden="true"></i>주문관리</a>
                         <ol>
-                            <li><a href="#">주문현황</a></li>
-                            <li><a href="#">매출현황</a></li>
-                            <li><a href="#">결제관리</a></li>
-                            <li><a href="#">배송관리</a></li>
+                            <li><a th:href="@{#}">주문현황</a></li>
+                            <li><a th:href="@{#}">매출현황</a></li>
+                            <li><a th:href="@{#}">결제관리</a></li>
+                            <li><a th:href="@{#}">배송관리</a></li>
                         </ol>
                     </li>
                     <li>
-                        <a href="#"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>게시판관리</a>
+                        <a th:href="@{#}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>게시판관리</a>
                         <ol>
-                            <li><a href="#">게시판현황</a></li>
-                            <li><a href="#">고객문의</a></li>
+                            <li><a th:href="@{#}">게시판현황</a></li>
+                            <li><a th:href="@{#}">고객문의</a></li>
                         </ol>
                     </li>
                 </ul>
@@ -297,7 +297,7 @@
                                         <li class="name">배너이름</li>
                                         <li class="size">크기 : 1200 x 80</li>
                                         <li class="size">배경색 : #e4dfdf</li>
-                                        <li class="link"><a href="#">배너링크</a></li>
+                                        <li class="link"><a th:href="@{#}">배너링크</a></li>
                                     </ul>
                                 </td>
                                 <td>메인 - 상단</td>
@@ -307,8 +307,8 @@
                                 <td>14:00</td>
                                 <td>12</td>
                                 <td>
-                                    <a href="#">[비활성]</a>
-                                    <a href="#">[활성]</a>
+                                    <a th:href="@{#}">[비활성]</a>
+                                    <a th:href="@{#}">[활성]</a>
                                 </td>
                             </tr>
                             <tr>
@@ -320,7 +320,7 @@
                                         <li class="name">배너이름</li>
                                         <li class="size">크기 : 1200 x 80</li>
                                         <li class="size">배경색 : #e4dfdf</li>
-                                        <li class="link"><a href="#">배너링크</a></li>
+                                        <li class="link"><a th:href="@{#}">배너링크</a></li>
                                     </ul>
                                 </td>
                                 <td>메인 - 상단</td>
@@ -330,8 +330,8 @@
                                 <td>14:00</td>
                                 <td>12</td>
                                 <td>
-                                    <a href="#">[비활성]</a>
-                                    <a href="#">[활성]</a>
+                                    <a th:href="@{#}">[비활성]</a>
+                                    <a th:href="@{#}">[활성]</a>
                                 </td>
                             </tr>
                         </table>
@@ -368,7 +368,7 @@
                                     <ul>
                                         <li class="name">배너이름</li>
                                         <li class="size">크기 : 985 x 447</li>
-                                        <li class="link"><a href="#">배너링크</a></li>
+                                        <li class="link"><a th:href="@{#}">배너링크</a></li>
                                     </ul>                                
                                 </td>
                                 <td>메인 - 슬라이더</td>
@@ -378,8 +378,8 @@
                                 <td>14:00</td>
                                 <td>12</td>
                                 <td>
-                                    <a href="#">[비활성]</a>
-                                    <a href="#">[활성]</a>
+                                    <a th:href="@{#}">[비활성]</a>
+                                    <a th:href="@{#}">[활성]</a>
                                 </td>
                             </tr>
                             <tr>
@@ -390,7 +390,7 @@
                                     <ul>
                                         <li class="name">배너이름</li>
                                         <li class="size">크기 : 985 x 447</li>
-                                        <li class="link"><a href="#">배너링크</a></li>
+                                        <li class="link"><a th:href="@{#}">배너링크</a></li>
                                     </ul>                                
                                 </td>
                                 <td>메인 - 슬라이더</td>
@@ -400,8 +400,8 @@
                                 <td>14:00</td>
                                 <td>12</td>
                                 <td>
-                                    <a href="#">[비활성]</a>
-                                    <a href="#">[활성]</a>
+                                    <a th:href="@{#}">[비활성]</a>
+                                    <a th:href="@{#}">[활성]</a>
                                 </td>
                             </tr>
                             <tr>
@@ -412,7 +412,7 @@
                                     <ul>
                                         <li class="name">배너이름</li>
                                         <li class="size">크기 : 985 x 447</li>
-                                        <li class="link"><a href="#">배너링크</a></li>
+                                        <li class="link"><a th:href="@{#}">배너링크</a></li>
                                     </ul>                                
                                 </td>
                                 <td>메인 - 슬라이더</td>
@@ -422,8 +422,8 @@
                                 <td>14:00</td>
                                 <td>12</td>
                                 <td>
-                                    <a href="#">[비활성]</a>
-                                    <a href="#">[활성]</a>
+                                    <a th:href="@{#}">[비활성]</a>
+                                    <a th:href="@{#}">[활성]</a>
                                 </td>
                             </tr>
                             <tr>
@@ -434,7 +434,7 @@
                                     <ul>
                                         <li class="name">배너이름</li>
                                         <li class="size">크기 : 985 x 447</li>
-                                        <li class="link"><a href="#">배너링크</a></li>
+                                        <li class="link"><a th:href="@{#}">배너링크</a></li>
                                     </ul>                                
                                 </td>
                                 <td>메인 - 슬라이더</td>
@@ -444,8 +444,8 @@
                                 <td>14:00</td>
                                 <td>12</td>
                                 <td>
-                                    <a href="#">[비활성]</a>
-                                    <a href="#">[활성]</a>
+                                    <a th:href="@{#}">[비활성]</a>
+                                    <a th:href="@{#}">[활성]</a>
                                 </td>
                             </tr>
                         </table>
@@ -481,7 +481,7 @@
                                     <ul>
                                         <li class="name">배너이름</li>
                                         <li class="size">크기 : 456 x 60</li>
-                                        <li class="link"><a href="#">배너링크</a></li>
+                                        <li class="link"><a th:href="@{#}">배너링크</a></li>
                                     </ul>                                
                                 </td>
                                 <td>상품 - 상세보기</td>
@@ -491,8 +491,8 @@
                                 <td>14:00</td>
                                 <td>12</td>
                                 <td>
-                                    <a href="#">[비활성]</a>
-                                    <a href="#">[활성]</a>
+                                    <a th:href="@{#}">[비활성]</a>
+                                    <a th:href="@{#}">[활성]</a>
                                 </td>
                             </tr>
                         </table>
@@ -528,7 +528,7 @@
                                     <ul>
                                         <li class="name">배너이름</li>
                                         <li class="size">크기 : 425 x 260</li>
-                                        <li class="link"><a href="#">배너링크</a></li>
+                                        <li class="link"><a th:href="@{#}">배너링크</a></li>
                                     </ul>                                
                                 </td>
                                 <td>회원 - 로그인</td>
@@ -538,8 +538,8 @@
                                 <td>14:00</td>
                                 <td>12</td>
                                 <td>
-                                    <a href="#">[비활성]</a>
-                                    <a href="#">[활성]</a>
+                                    <a th:href="@{#}">[비활성]</a>
+                                    <a th:href="@{#}">[활성]</a>
                                 </td>
                             </tr>
                         </table>
@@ -575,7 +575,7 @@
                                     <ul>
                                         <li class="name">배너이름</li>
                                         <li class="size">크기 : 810 x 86</li>
-                                        <li class="link"><a href="#">배너링크</a></li>
+                                        <li class="link"><a th:href="@{#}">배너링크</a></li>
                                     </ul>                                
                                 </td>
                                 <td>마이페이지</td>
@@ -585,8 +585,8 @@
                                 <td>14:00</td>
                                 <td>12</td>
                                 <td>
-                                    <a href="#">[비활성]</a>
-                                    <a href="#">[활성]</a>
+                                    <a th:href="@{#}">[비활성]</a>
+                                    <a th:href="@{#}">[활성]</a>
                                 </td>
                             </tr>
                             <tr>
@@ -597,7 +597,7 @@
                                     <ul>
                                         <li class="name">배너이름</li>
                                         <li class="size">크기 : 810 x 86</li>
-                                        <li class="link"><a href="#">배너링크</a></li>
+                                        <li class="link"><a th:href="@{#}">배너링크</a></li>
                                     </ul>                                
                                 </td>
                                 <td>마이페이지</td>
@@ -607,8 +607,8 @@
                                 <td>14:00</td>
                                 <td>12</td>
                                 <td>
-                                    <a href="#">[비활성]</a>
-                                    <a href="#">[활성]</a>
+                                    <a th:href="@{#}">[비활성]</a>
+                                    <a th:href="@{#}">[활성]</a>
                                 </td>
                             </tr>
                         </table>
