@@ -19,17 +19,29 @@ public class QOrders extends EntityPathBase<Orders> {
 
     public static final QOrders orders = new QOrders("orders");
 
+    public final StringPath addr1 = createString("addr1");
+
+    public final StringPath addr2 = createString("addr2");
+
+    public final NumberPath<Integer> couponCode = createNumber("couponCode", Integer.class);
+
+    public final NumberPath<Integer> couponDiscount = createNumber("couponDiscount", Integer.class);
+
+    public final NumberPath<Integer> delivery = createNumber("delivery", Integer.class);
+
     public final NumberPath<Integer> itemDiscount = createNumber("itemDiscount", Integer.class);
 
     public final StringPath memo = createString("memo");
 
-    public final StringPath orderAddr = createString("orderAddr");
-
-    public final DateTimePath<java.time.LocalDateTime> orderDate = createDateTime("orderDate", java.time.LocalDateTime.class);
+    public final DateTimePath<java.util.Date> orderDate = createDateTime("orderDate", java.util.Date.class);
 
     public final NumberPath<Integer> orderNo = createNumber("orderNo", Integer.class);
 
     public final NumberPath<Integer> orderTotalPrice = createNumber("orderTotalPrice", Integer.class);
+
+    public final StringPath payment = createString("payment");
+
+    public final NumberPath<Integer> point = createNumber("point", Integer.class);
 
     public final StringPath receiveHp = createString("receiveHp");
 
@@ -40,6 +52,8 @@ public class QOrders extends EntityPathBase<Orders> {
     public final StringPath sendName = createString("sendName");
 
     public final StringPath userId = createString("userId");
+
+    public final StringPath zip = createString("zip");
 
     public QOrders(String variable) {
         super(Orders.class, forVariable(variable));

@@ -31,8 +31,11 @@ public class User {
     private String addr2;
     private String regip;
     private String sms;
+    private String agree;
     private String provider;
     private String grade;
+    private String gender;
+    private int status;
 
     @CreationTimestamp
     private LocalDateTime regDate;

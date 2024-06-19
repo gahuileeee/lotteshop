@@ -1,253 +1,333 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">    
-    <title>롯데ON::롯데 온라인 쇼핑몰</title>
-    <link rel="shortcut icon" type="image/x-icon" href="../images/favicon.ico" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-    <script src="https://kit.fontawesome.com/20962f3e4b.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
-    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css">
-    <link rel="stylesheet" href="../css/common.css"/>
-    <link rel="stylesheet" href="./css/product.css"/>
-</head>
-<body>
-    <div id="wrapper">
-        <header>
-            <div class="top">
-                <div>
-                    <a th:href="@{#}">로그인</a>
-                    <a th:href="@{#}">회원가입</a>
-                    <a th:href="@{#}">마이페이지</a>
-                    <a th:href="@{#}"><i class="fa fa-shopping-cart" aria-hidden="true"></i>&nbsp;장바구니</a>
-                </div>
-            </div>
-            <div class="logo">
-                <div>
-                  <a th:href="@{#}"><img src="../images/header_logo.png" alt="로고" /></a>
-                    <form action="#">
-                        <input type="text" name="search"/>
-                        <button><i class="fa fa-search"></i></button>
-                    </form>                
-                </div>
-                
-            </div>
-            <div class="menu">
-                <div>
-                    <ul>
-                        <li><a th:href="@{#}">히트상품</a></li>
-                        <li><a th:href="@{#}">추천상품</a></li>
-                        <li><a th:href="@{#}">최신상품</a></li>
-                        <li><a th:href="@{#}">인기상품</a></li>
-                        <li><a th:href="@{#}">할인상품</a></li>
-                    </ul>
-                    <ul>
-                        <li><a th:href="@{#}">쿠폰존</a></li>
-                        <li><a th:href="@{#}">사용후기</a></li>
-                        <li><a th:href="@{#}">개인결제</a></li>
-                        <li><a th:href="@{#}">고객센터</a></li>
-                        <li><a th:href="@{#}">FAQ</a></li>
-                    </ul>
-                </div>
-            </div>
-        </header>
-        <main id="product">            
-            <aside>
-                <ul class="category">     
-                    <li><i class="fa fa-bars" aria-hidden="true"></i>카테고리</li>
-                    <li>
-                        <a th:href="@{#}"><i class="fas fa-tshirt"></i>패션·의류·뷰티</a>
-                        <ol>
-                            <li><a th:href="@{#}">남성의류</a></li>
-                            <li><a th:href="@{#}">여성의류</a></li>
-                            <li><a th:href="@{#}">잡화</a></li>
-                            <li><a th:href="@{#}">뷰티</a></li>
-                        </ol>
-                    </li>
-                    <li>
-                        <a th:href="@{#}"><i class="fas fa-laptop"></i>가전·디지털</a>
-                        <ol>
-                            <li><a th:href="@{#}">노트북/PC</a></li>
-                            <li><a th:href="@{#}">가전</a></li>
-                            <li><a th:href="@{#}">휴대폰</a></li>
-                            <li><a th:href="@{#}">기타</a></li>
-                        </ol>
-                    </li>
-                    <li>
-                        <a th:href="@{#}"><i class="fas fa-utensils"></i>식품·생필품</a>
-                        <ol>
-                            <li><a th:href="@{#}">신선식품</a></li>
-                            <li><a th:href="@{#}">가공식품</a></li>
-                            <li><a th:href="@{#}">건강식품</a></li>
-                            <li><a th:href="@{#}">생필품</a></li>
-                        </ol>
-                    </li>
-                    <li>
-                        <a th:href="@{#}"><i class="fas fa-home"></i>홈·문구·취미</a>
-                        <ol>
-                            <li><a th:href="@{#}">가구/DIY</a></li>
-                            <li><a th:href="@{#}">침구·커튼</a></li>
-                            <li><a th:href="@{#}">생활용품</a></li>
-                            <li><a th:href="@{#}">사무용품</a></li>
-                        </ol>
-                    </li>
-                </ul>
-            </aside>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout/productLayout}">
 
-            <!-- 장바구니 페이지 시작 -->
-            <section class="cart">
-              
-              <!-- 제목, 페이지 네비게이션 -->
-              <nav>
+<div class="container" layout:fragment="content">
+
+    <main id="product">
+        <aside>
+            <!-- 카테고리 -->
+            <ul class="category">
+                <li><i class="fa fa-bars" aria-hidden="true"></i>카테고리</li>
+                <li>
+                    <a th:href="@{/product/list(cateName1='의류/패션')}"><i class="fas fa-tshirt"></i>의류/패션<i
+                            class="fas fa-angle-right"></i></a>
+                    <ol>
+                        <li><a th:href="@{/product/list(cateName1='의류/패션' , cateName2='남성의류')}" >남성의류</a>
+                            <ol>
+                                <li><a th:href="@{/product/list(cateName1='의류/패션' , cateName2='남성의류' , cateName3='상의')}">상의</a>
+                                <li><a th:href="@{/product/list(cateName1='의류/패션' , cateName2='남성의류' , cateName3='하의')}">하의</a>
+                                <li><a th:href="@{/product/list(cateName1='의류/패션' , cateName2='남성의류' , cateName3='잡화(가방,지갑,벨트)')}">잡화(가방,지갑,벨트)</a>
+                                <li><a th:href="@{/product/list(cateName1='의류/패션' , cateName2='남성의류' , cateName3='신발')}">신발</a>
+                            </ol>
+                        </li>
+                        <li><a th:href="@{/product/list(cateName1='의류/패션' , cateName2='여성의류')}">여성의류</a>
+                            <ol>
+                                <li><a th:href="@{/product/list(cateName1='의류/패션' , cateName2='여성의류' , cateName3= '상의')}">상의</a>
+                                <li><a th:href="@{/product/list(cateName1='의류/패션' , cateName2='여성의류' , cateName3= '하의')}">하의</a>
+                                <li><a th:href="@{/product/list(cateName1='의류/패션' , cateName2='여성의류' , cateName3= '잡화(가방,지갑,벨트)')}">잡화(가방,지갑,벨트)</a>
+                                <li><a th:href="@{/product/list(cateName1='의류/패션' , cateName2='여성의류' , cateName3= '신발')}">신발</a>
+                            </ol>
+                        </li>
+                    </ol>
+                </li>
+                <li>
+                    <a th:href="@{/product/list(cateName1='가전')}"><i class="fas fa-laptop"></i>가전<i
+                            class="fas fa-angle-right"></i></a>
+                    <ol>
+                        <li><a th:href="@{/product/list(cateName1='가전', cateName2='생활가전')}">생활가전</a>
+                            <ol>
+                                <li><a th:href="@{/product/list(cateName1='가전', cateName2='생활가전' ,cateName3='세탁기/세탁기용품')}">세탁기/세탁기용품</a>
+                                <li><a th:href="@{/product/list(cateName1='가전', cateName2='생활가전' ,cateName3='청소기')}">청소기</a>
+                                <li><a th:href="@{/product/list(cateName1='가전', cateName2='생활가전' ,cateName3='에어컨')}">에어컨</a>
+                                <li><a th:href="@{/product/list(cateName1='가전', cateName2='생활가전' ,cateName3='냉장고')}">냉장고</a>
+                            </ol>
+                        </li>
+                        <li><a th:href="@{/product/list(cateName1='가전', cateName2='TV/영상가전')}">TV/영상가전</a>
+                            <ol>
+                                <li><a th:href="@{/product/list(cateName1='가전', cateName2='TV/영상가전', cateName3='TV')}">TV</a>
+                                <li><a th:href="@{/product/list(cateName1='가전',cateName2='TV/영상가전', cateName3='영상플레이어')}">영상플레이어</a>
+                            </ol>
+                        </li>
+                    </ol>
+                </li>
+                <li>
+                    <a th:href="@{/product/list(cateName1='식품')}"><i class="fas fa-utensils"></i>식품<i
+                            class="fas fa-angle-right"></i></a>
+                    <ol>
+                        <li><a th:href="@{/product/list(cateName1='식품', cateName2='농/축산물')}">농/축산물</a>
+
+                            <ol>
+                                <li><a th:href="@{/product/list(cateName1='식품', cateName2='농/축산물', cateName3='정육/계란')}">정육/계란</a>
+                                <li><a th:href="@{/product/list(cateName1='식품', cateName2='농/축산물', cateName3='정육/계란')}">쌀/잡곡/견과</a>
+                                <li><a th:href="@{/product/list(cateName1='식품', cateName2='농/축산물', cateName3='정육/계란')}">과일</a>
+                                <li><a th:href="@{/product/list(cateName1='식품', cateName2='농/축산물', cateName3='정육/계란')}">채소</a>
+                            </ol>
+
+                        </li>
+                        <li><a th:href="@{/product/list(cateName1='식품', cateName2='수산/건어물')}">수산/건어물</a>
+
+                            <ol>
+                                <li><a th:href="@{/product/list(cateName1='식품', cateName2='수산/건어물', cateName3='생선')}">생선</a>
+                                <li><a th:href="@{/product/list(cateName1='식품', cateName2='수산/건어물', cateName3='김/해조류')}">김/해조류</a>
+                                <li><a th:href="@{/product/list(cateName1='식품', cateName2='수산/건어물', cateName3='전복/굴/조개류')}">전복/굴/조개류</a>
+                                <li><a th:href="@{/product/list(cateName1='식품', cateName2='수산/건어물', cateName3='오징어/낙지/쭈꾸미')}">오징어/낙지/쭈꾸미</a>
+                            </ol>
+                        </li>
+                    </ol>
+                <li>
+
+
+                    <a th:href="@{/product/list(cateName1='반려동물')}"><i class="fas fa-home"></i>반려동물<i
+                            class="fas fa-angle-right"></i></a>
+                    <ol>
+                        <li>
+                            <a th:href="@{/product/list(cateName1='반려동물', cateName2='강아지')}">강아지</a>
+                            <ol>
+                                <li><a th:href="@{/product/list(cateName1='반려동물', cateName2='강아지', cateName3='사료/영양제')}">사료/영양제</a></li>
+                                <li><a th:href="@{/product/list(cateName1='반려동물', cateName2='강아지', cateName3='간식')}">간식</a></li>
+                                <li><a th:href="@{/product/list(cateName1='반려동물', cateName2='강아지', cateName3='배변용품')}">배변용품</a></li>
+                                <li><a th:href="@{/product/list(cateName1='반려동물', cateName2='강아지', cateName3='장난감/훈련용품')}">장난감/훈련용품</a></li>
+                            </ol>
+                        </li>
+                        <li>
+                            <a th:href="@{/product/list(cateName1='반려동물', cateName2='고양이')}">고양이</a>
+                            <ol>
+                                <li><a th:href="@{/product/list(cateName1='반려동물', cateName2='고양이', cateName3='사료/영양제')}">사료/영양제</a></li>
+                                <li><a th:href="@{/product/list(cateName1='반려동물', cateName2='고양이', cateName3='간식')}">간식</a></li>
+                                <li><a th:href="@{/product/list(cateName1='반려동물', cateName2='고양이', cateName3='배변용품')}">배변용품</a></li>
+                                <li><a th:href="@{/product/list(cateName1='반려동물', cateName2='고양이', cateName3='장난감/훈련용품')}">장난감/훈련용품</a></li>
+                            </ol>
+                        </li>
+                    </ol>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- 장바구니 페이지 시작 -->
+        <section class="cart">
+
+            <!-- 제목, 페이지 네비게이션 -->
+            <nav>
                 <h1>장바구니</h1>
                 <p>
-                  HOME > <span>패션·의류·뷰티</span> > <strong>장바구니</strong>
+                    HOME  > <strong>장바구니</strong>
                 </p>
-              </nav>
-                            
-              <form action="#">
+            </nav>
+
+            <form action="#">
                 <!-- 장바구니 목록 -->
                 <table>
-                  <thead>
+                    <thead>
                     <tr>
-                      <th><input type="checkbox" name="all"></th>
-                      <th>상품명</th>
-                      <th>총수량</th>
-                      <th>판매가</th>
-                      <th>할인</th>
-                      <th>포인트</th>
-                      <th>배송비</th>
-                      <th>소계</th>
+                        <th><input type="checkbox" name="all" id="all"></th>
+                        <th>상품명</th>
+                        <th>총수량</th>
+                        <th>판매가</th>
+                        <th>할인(%)</th>
+                        <th>포인트</th>
+                        <th>배송비</th>
+                        <th>소계</th>
                     </tr>
-                  </thead>
-                  <tbody>
-                    <tr class="empty">
-                      <td colspan="7">장바구니에 상품이 없습니다.</td>
-                    </tr>
-                    <tr>
-                      <td><input type="checkbox" name=""></td>
-                      <td>
-                        <article>
-                          <a th:href="@{#}"><img src="https://via.placeholder.com/80x80" alt=""></a>
-                          <div>
-                            <h2><a th:href="@{#}">상품명</a></h2>
-                            <p>상품설명</p>
-                          </div>
-                        </article>
-                      </td>
-                      <td>1</td>
-                      <td>27,000</td>
-                      <td>5%</td>
-                      <td>270</td>
-                      <td>무료배송</td>
-                      <td>27,000</td>
-                    </tr>
-                    <tr>
-                      <td><input type="checkbox" name=""></td>
-                      <td>
-                        <article>
-                          <a th:href="@{#}"><img src="https://via.placeholder.com/80x80" alt=""></a>
-                          <div>
-                            <h2><a th:href="@{#}">상품명</a></h2>
-                            <p>상품설명</p>
-                          </div>
-                        </article>
-                      </td>
-                      <td>1</td>
-                      <td>27,000</td>
-                      <td>5%</td>
-                      <td>270</td>
-                      <td>무료배송</td>
-                      <td>27,000</td>
-                    </tr>
-                    <tr>
-                      <td><input type="checkbox" name=""></td>
-                      <td>
-                        <article>
-                          <a th:href="@{#}"><img src="https://via.placeholder.com/80x80" alt=""></a>
-                          <div>
-                            <h2><a th:href="@{#}">상품명</a></h2>
-                            <p>상품설명</p>
-                          </div>
-                        </article>
-                      </td>
-                      <td>1</td>
-                      <td>27,000</td>
-                      <td>5%</td>
-                      <td>270</td>
-                      <td>무료배송</td>
-                      <td>27,000</td>
-                    </tr>
-                    
-                  </tbody>
-                </table>
-                <input type="button" name="del" value="선택삭제">
+                    </thead>
+                    <tbody>
+                    <th:block th:if="${carts.size()==0}">
+                        <tr class="empty">
+                            <td colspan="7">장바구니에 상품이 없습니다.</td>
+                        </tr>
+                    </th:block>
+                  <th:block th:if="${carts.size()!=0}" th:each="subProduct , index:${subProducts}">
+                      <tr>
+                          <td><input type="checkbox" name="check" id="check"></td>
+                          <td>
+                              <article>
+                                  <a th:href="@{/product/view(prodno=${subProduct.products.getProdNo()})}"><img th:src="@{/uploads/__${subProduct.products.image1}__}" alt=""></a>
+                                  <div>
+                                      <h2><a th:href="@{/product/view(prodno=${subProduct.products.getProdNo()})}">
+                                          [[${subProduct.products.prodName}]]</a></h2>
+                                      <p> [[${subProduct.products.etc}]]</p>
+                                      <p> [[${subProduct.color}]]</p>
+                                      <p> [[${subProduct.size}]]</p>
+                                  </div>
+                              </article>
+                          </td>
+                          <td >
+                              <input id="cartProdCount" th:data-no="${carts[index.index].cartNo}" style="width: 30px" type="number" min="1" th:value="${carts[index.index].cartProdCount}"></td>
+                          <td id="cartProdPrice">[[${subProduct.prodPrice}]]</td>
+                          <td id="cartProdDiscount">[[${subProduct.products.prodDiscount}]]</td>
+                          <td id="cartProdPoint">[[${subProduct.products.point}]]</td>
+                          <td id="cartProdDelivery">[[${subProduct.products.delivery}]]</td>
+                          <td id="totalPriceTempt">[[${#numbers.formatDecimal(subProduct.prodPrice * carts[index.index].cartProdCount * (100 - subProduct.products.prodDiscount) * 0.01 , 1, 0)}]]</td>
+                          <td id="cartNo" style="display: none">[[${carts[index.index].cartNo }]]</td>
+                      </tr>
+                  </th:block>
 
+
+                    </tbody>
+                </table>
+                <input type="button" name="del" id="del" value="선택삭제">
+                    <script>
+                        window.onload=function (e){
+                            const all = document.getElementById('all');
+                            const checkAll = document.querySelectorAll('#check');
+                            const orderBuy = document.getElementById('orderBuy');
+
+                            all.onclick = function (){
+                                if (all.checked){
+                                    checkAll.forEach(function (item) {
+                                        if (!item.checked) {
+                                            item.click();
+                                        }
+                                    });
+                                }else{
+                                    checkAll.forEach(function (item) {
+                                        if (item.checked) {
+                                            item.click();
+                                        }
+                                    });
+                                }
+                            }
+                            const prodCount = document.getElementById('prodCount');
+                            const prodPrices = document.getElementById('prodPrices');
+                            const discounts = document.getElementById('discounts');
+                            const delivery = document.getElementById('delivery');
+                            const points = document.getElementById('points');
+                            const totalPrice = document.getElementById('totalPrice');
+                            document.addEventListener("click", function (event){
+                                checkAll.forEach(function (item){
+                                    if(event.target === item ){
+                                        calculationTotal();
+                                    }
+                                });
+                            });
+
+                            document.addEventListener("change" , async function (event) {
+                                const cartProdCount = document.querySelectorAll('#cartProdCount');
+                                for (const item of cartProdCount) {
+                                    if(event.target === item){
+                                        //이거시를 보내고 소계를 넣어주자
+                                        const result = await fetchGet('/lotteshop/product/modifyCount?count='+event.target.value+'&' +
+                                            'cartNo='+event.target.getAttribute('data-no'));
+                                        console.log(result.data)
+                                        item.closest('tr').querySelector('#totalPriceTempt').innerText=result.data;
+                                        calculationTotal();
+                                    }
+                                }
+                            })
+
+                            const del = document.getElementById('del');
+                            var cartLists = [];
+                            del.onclick=function (e){
+                                e.preventDefault();
+                                if(confirm('삭제하시겠습니까?')){
+
+                                    checkAll.forEach(function (item) {
+                                        if (item.checked) {
+                                            cartLists.push(parseInt(item.closest('tr').querySelector('#cartNo').innerText));
+                                            item.closest('tr').remove();
+                                            item.click();
+                                        }
+                                    });
+                                    calculationTotal();
+                                    if(cartLists.length == 0){
+                                        alert('삭제할 상품이 없습니다.')
+                                    }else{
+                                        const json = {list : cartLists};
+                                        console.log(json)
+                                        fetchPut('/lotteshop/product/cart/delete', json);
+
+                                    }
+                                }
+                            }
+
+                            orderBuy.onclick=function (e){
+                                var cartList = [];
+                                e.preventDefault();
+                                if(confirm('주문페이지로 이동하시겠습니까?')){
+
+                                    checkAll.forEach(function (item) {
+                                        if (item.checked) {
+                                            cartList.push(parseInt(item.closest('tr').querySelector('#cartNo').innerText));
+                                        }
+                                    });
+                                    if(cartList.length == 0){
+                                        alert('상품을 선택해주세요.')
+                                    }else{
+                                       window.location.href ='/lotteshop/product/order2?list='+cartList;
+
+                                    }
+                                }
+                            }
+
+                            function calculationTotal(){
+                                prodCount.innerText=0;
+                                prodPrices.innerText=0;
+                                discounts.innerText=0;
+                                delivery.innerText=0;
+                                points.innerText=0;
+                                totalPrice.innerText=0;
+                                checkAll.forEach(function (item){
+                                    if(item.checked){
+                                        var closestRow = item.closest('tr');
+                                        var cartProdCount = closestRow.querySelector('#cartProdCount').value;
+                                        var cartProdPrice = closestRow.querySelector('#cartProdPrice').textContent;
+                                        var cartProdDiscount = closestRow.querySelector('#cartProdDiscount').textContent;
+                                        var cartProdPoint = closestRow.querySelector('#cartProdPoint').textContent;
+                                        var cartProdDelivery = closestRow.querySelector('#cartProdDelivery').textContent;
+
+                                        prodCount.innerText = parseInt(prodCount.innerText )+ parseInt(cartProdCount);
+                                        prodPrices.innerText = parseInt(prodPrices.innerText )+ parseInt(cartProdPrice * cartProdCount);
+                                        points.innerText = parseInt(points.innerText )+ parseInt(cartProdPoint * cartProdCount);
+                                        discounts.innerText = parseInt(discounts.innerText )+ parseInt(cartProdPrice * cartProdCount * (cartProdDiscount) * 0.01 );
+                                        var tempt = parseInt(prodPrices.innerText) - parseInt(discounts.innerText);
+                                        if(tempt < 30000){
+                                            delivery.innerText = parseInt(delivery.innerText )+ parseInt(cartProdDelivery);
+                                        }else{
+                                            delivery.innerText=0;
+                                        }
+                                        totalPrice.innerText =   tempt + parseInt(delivery.innerText);
+                                    }
+
+                                });
+                            }
+                        }
+                    </script>
                 <!-- 장바구니 전체합계 -->
                 <div class="total">
-                  <h2>전체합계</h2>
-                  <table border="0">
-                    <tr>
-                      <td>상품수</td>
-                      <td>1</td>
-                    </tr>
-                    <tr>
-                      <td>상품금액</td>
-                      <td>27,000</td>
-                    </tr>
-                    <tr>
-                      <td>할인금액</td>
-                      <td>-1,000</td>
-                    </tr>
-                    <tr>
-                      <td>배송비</td>
-                      <td>0</td>
-                    </tr>              
-                    <tr>
-                      <td>포인트</td>
-                      <td>260</td>
-                    </tr>
-                    <tr>
-                      <td>전체주문금액</td>
-                      <td>26,000</td>
-                    </tr>
-                  </table>
-                  <input type="submit" name="" value="주문하기">    
+                    <h2>전체합계</h2>
+                    <table border="0">
+                        <tr>
+                            <td>상품수</td>
+                            <td id="prodCount" >0</td>
+                        </tr>
+                        <tr>
+                            <td>상품금액</td>
+                            <td id="prodPrices">0</td>
+                        </tr>
+                        <tr>
+                            <td>할인금액</td>
+                            <td id="discounts">0</td>
+                        </tr>
+                        <tr>
+                            <td>배송비</td>
+                            <td id="delivery">0</td>
+                        </tr>
+                        <tr>
+                            <td>포인트</td>
+                            <td id="points">0</td>
+                        </tr>
+                        <tr>
+                            <td>전체주문금액</td>
+                            <td id="totalPrice">0</td>
+                        </tr>
+                    </table>
+                    <input type="submit" name="" id="orderBuy" value="주문하기">
                 </div>
 
-              </form>
+            </form>
 
-            </section>
-            <!-- 장바구니 페이지 끝 -->
-        </main>
-        <footer>
-          <ul>
-            <li><a th:href="@{#}">회사소개</a></li>
-            <li><a th:href="@{#}">서비스이용약관</a></li>
-            <li><a th:href="@{#}">개인정보처리방침</a></li>
-            <li><a th:href="@{#}">전자금융거래약관</a></li>
-          </ul>
-          <div>
-            <p><img src="../images/footer_logo.png" alt="로고" /></p>
-            <p>
-              <strong>(주)롯데ON</strong><br />
-              서울특별시 송파구 올림픽로 300 롯데월드타워 26층 (역삼동 강남파이낸스센터)<br />
-              대표이사 : 김사무엘상현, 정준호, 강성현<br />
-              사업자등록번호 : 529-85-00774(롯데쇼핑(주) e커머스사업부)<br />
-              통신판매업 신고 : 서울송파 제0158호<br>
-              호스팅 서비스사업자 : 롯데쇼핑(주) e커머스사업부
-            </p>
-            <p>
-              <strong>고객센터</strong><br />
-              Tel : 1899-7000(유료) (평일 09:00~18:00)<br />
-              Fax : 051-123-4567 | E-mail : lotteon@lotte.net<br />
-            </p>
-          </div>
-        </footer>
-        <button type="button" id="top">상단이동</button>
-    </div>    
-</body>
+        </section>
+        <!-- 장바구니 페이지 끝 -->
+    </main>
+</div>
 </html>

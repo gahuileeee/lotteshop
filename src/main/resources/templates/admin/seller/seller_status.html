@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/admin/layout/adminLayout.html}">
+<section id="admin-index" layout:fragment="content">
+    <style>
+
+        #admin-index body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        #admin-index table {
+            width: 70%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        /* 모달 */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 15% auto;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-width: 600px;
+            position: relative;
+        }
+
+        h3 {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        p {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        span {
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .close_btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 24px;
+            color: #aaa;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .close_btn:hover {
+            color: #555;
+        }
+
+        .paging {
+            text-align: center;
+        }
+
+        #approval{
+            border: none;
+        }
+
+    </style>
+
+
+    <script>
+        window.onload = function () {
+
+            document.querySelectorAll('.sellerInfo').forEach(function (link) {
+                link.addEventListener('click', function (event) {
+
+                    const uid = event.target.getAttribute('data-sellerUid');
+                    event.preventDefault();
+                    //alert(uid);
+                    openModal(uid);
+                });
+            });
+
+            //승인버튼 클릭시, temp->Manager로 판매자로 승격
+            document.querySelectorAll('.approval').forEach(function (button) {
+                button.addEventListener('click', async function (event) {
+
+                    event.preventDefault();
+                    //sellerUid 넘겨주기!
+                    const sellerUid = event.target.getAttribute('data-sellerNo');
+
+                    console.log("sellerNo : " + sellerUid);//sellerID 잘 나옴
+
+                    const data = await fetchGet(`/lotteshop/admin/sellerTrans?sellerUid=${sellerUid}`);
+
+                    console.log(data.result);
+
+                    if (data.result == "1") {
+
+                        alert("판매자 권한이 변환되었습니다.");
+
+                        window.location.href = `/lotteshop/admin/seller/seller_status`;
+
+                    } else {
+                        alert("판매자 권한 변경에 실패했습니다");
+                    }
+                })
+            })
+
+            // 사용자가 모달 바깥을 클릭하면 모달이 닫히도록 설정
+            window.onclick = function (event) {
+                var modal = document.getElementById('myModal');
+                var btn = document.getElementsByClassName('close_btn')[0];
+                if (event.target === modal || event.target === btn) {
+                    closeModal();
+                }
+            }
+
+
+            //모달 띄우기
+            async function openModal(uid) {
+                document.getElementById('myModal').style.display = 'block';
+
+                const data = await fetchGet(`/lotteshop/admin/seller/${uid}`);
+
+                setModalContent(data);
+
+            }
+
+            // 모달 닫기
+            function closeModal() {
+                document.getElementById('myModal').style.display = 'none';
+            }
+
+            // 모달 창이 열릴 때 사용자에게 보여줄 정보 설정
+            function setModalContent(data) {
+                document.getElementById('sellerId').innerText = data.result.sellerUid;
+                document.getElementById('companyName').innerText = data.result.sellerName;
+                document.getElementById('sellerCEO').innerText = data.result.sellerCEO;
+                document.getElementById('sellerSaNumber').innerText = data.result.sellerSaNumber;
+                document.getElementById('companyHp').innerText = data.result.sellerHp;
+                document.getElementById('companyEmail').innerText = data.result.sellerEmail;
+                document.getElementById('companyAddr').innerText = data.result.sellerAddr1 + data.result.sellerAddr2;
+            }
+
+            async function fetchGet(url) {
+
+                console.log("fetchData1...1");
+
+                try {
+                    console.log("fetchData1...2");
+                    const response = await fetch(url);
+                    console.log("here1");
+
+                    if (!response.ok) {
+                        console.log("here2");
+                        throw new Error('response not ok');
+                    }
+
+                    const data = await response.json();
+                    console.log("data1 : " + data);
+                    return data;
+                } catch (err) {
+                    console.log(err)
+                }
+            }
+        }
+
+    </script>
+    <main>
+
+
+        <h1>권한 설정</h1>
+
+        <table>
+            <tr>
+                <th>아이디</th>
+                <th>회사명</th>
+                <th>사업자번호</th>
+                <th>전화번호</th>
+                <th>관리</th>
+            </tr>
+            <tr th:each="sellers : ${sellerList}" th:if="${sellerList}!=null">
+                <td th:text="${sellers.sellerUid}">아이디</td>
+                <td th:text="${sellers.sellerName}">회사명</td>
+                <td th:text="${sellers.sellerSaNumber}">사업자번호</td>
+                <td th:text="${sellers.sellerDHp}">전화번호</td>
+                <td id="approvalContainer">
+                    <button id="approval" class="approval" th:data-sellerNo="${sellers.sellerUid}">승인</button>
+                </td>
+            </tr>
+            <tr th:if="${sellerList == null or #lists.isEmpty(sellerList)}">
+                <td colspan="5">
+                    <span style="text-align: center">판매자가 없습니다.</span>
+                </td>
+            </tr>
+        </table>
+        <br><br>
+        <h1>판매자 현황</h1>
+        <table>
+            <tr>
+                <th>판매자 이름</th>
+                <th>주문건수</th>
+                <th>매출 현황</th>
+                <th>관리</th>
+            </tr>
+            <tr th:each="status:${pageResponseDTO.dtoList}">
+                <td th:text="${status.sellerUid}">판매자1</td>
+                <td th:text="${status.orderCount}">100</td>
+                <td th:text="${#numbers.formatInteger(status.totalPrice,1,'COMMA')}">$10,000</td>
+                <td>
+                    <a class="sellerInfo" href="#" th:data-sellerUid="${status.sellerUid}">상세히 보기</a>
+                </td>
+            </tr>
+        </table>
+        <br>
+        <div class="paging">
+            <span class="prev" th:if="${pageResponseDTO.prev}">
+                <a th:href="@{/admin/seller/seller_status(pg=${pageResponseDTO.start - 1})}">이전</a>
+            </span>
+            <span class="num" th:each="n : ${#numbers.sequence(pageResponseDTO.start, pageResponseDTO.end)}">
+                <th:block th:if="${n == pageResponseDTO.getRpg()}">
+                      <a th:href="@{/admin/seller/seller_status(pg=${n})}" class="on" th:text="${n}"></a>
+                </th:block>
+                <th:block th:if="${n != pageResponseDTO.getRpg()}">
+                      <a th:href="@{/admin/seller/seller_status(pg=${n})}"  th:text="${n}"></a>
+                </th:block>
+            </span>
+            <span class="next" th:if="${pageResponseDTO.next}">
+                <a th:href="@{/admin/seller/seller_status(pg=${pageResponseDTO.end + 1})}">다음</a>
+            </span>
+        </div>
+
+        <!-- 모달 팝업 -->
+        <div id="myModal" class="modal">
+            <div class="modal-content">
+                <span class="close_btn">&times;</span>
+                <h3>판매자 정보</h3>
+                <p>아 이 디 : <span id="sellerId"></span></p>
+                <p>회 사 명 : <span id="companyName"></span></p>
+                <p>대 표 자 : <span id="sellerCEO"></span></p>
+                <p>사업자번호: <span id="sellerSaNumber"></span></p>
+                <p>대표전화 : <span id="companyHp"></span></p>
+                <p>이 메 일 : <span id="companyEmail"></span></p>
+                <p>주 소 : <span id="companyAddr"></span></p>
+            </div>
+        </div>
+        <!--모달 팝업 끝!-->
+
+    </main>
+</section>
+</html>

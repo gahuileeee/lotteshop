@@ -23,7 +23,11 @@ public class QUser extends EntityPathBase<User> {
 
     public final StringPath addr2 = createString("addr2");
 
+    public final StringPath agree = createString("agree");
+
     public final StringPath email = createString("email");
+
+    public final StringPath gender = createString("gender");
 
     public final StringPath grade = createString("grade");
 
@@ -46,6 +50,8 @@ public class QUser extends EntityPathBase<User> {
     public final StringPath role = createString("role");
 
     public final StringPath sms = createString("sms");
+
+    public final NumberPath<Integer> status = createNumber("status", Integer.class);
 
     public final NumberPath<Integer> totalPoint = createNumber("totalPoint", Integer.class);
 

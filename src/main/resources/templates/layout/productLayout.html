@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns="http://www.w3.org/1999/html">
+
+
+<head>
+    <meta charset="UTF-8">
+    <title>롯데ON::4조</title>
+    <link rel="shortcut icon" type="image/x-icon" th:href="@{/images/favicon.ico}"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://kit.fontawesome.com/20962f3e4b.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css">
+
+    <link rel="stylesheet" th:href="@{/css/common.css}"/>
+    <link rel="stylesheet" th:href="@{/product/css/product.css}"/>
+    <script   type="text/javascript" th:src="@{/js/util.js}" ></script>
+<script>
+    //검색
+    window.onload = function (){
+    function submitForm() {
+        var keyword = document.getElementById("searchInput").value;
+        if (keyword.trim() === "") {
+            alert("검색어를 입력하세요!");
+            return false; // 폼 전송 중단
+        }
+        document.getElementById("searchForm").submit();
+        return true;
+    }
+
+    }
+
+    ///////////////////////////////////////////////////////////
+    ////////////////페이지 상단이동////////////////////////////
+    ///////////////////////////////////////////////////////////
+    $(document).ready(function () {
+        $(window).scroll(function () {
+            if ($(this).scrollTop() > 300) {
+                $('#btnTop').fadeIn();
+            } else {
+                $('#btnTop').fadeOut();
+            }
+        });
+        $('#btnTop').click(function () {
+            $('html, body').animate({scrollTop: 0}, 400);
+            return false;
+        });
+    });
+    ///////////////////////////////////////////////////////////
+    ////////////////페이지 하단이동////////////////////////////
+    ///////////////////////////////////////////////////////////
+    $(document).ready(function () {
+        var scrolling = false; // 스크롤 상태를 나타내는 변수
+        var scrollInterval; // 스크롤 동작을 위한 인터벌 변수
+
+        // 아래로 스크롤하는 버튼 클릭 이벤트
+        $('#btnDown').mousedown(function (event) {
+            if (event.detail === 2) { // 더블클릭 이벤트를 감지합니다.
+                scrollToBottom(); // 제일 아래로 스크롤하는 함수를 호출합니다.
+            } else {
+                scrolling = true; // 스크롤 상태를 true로 변경합니다.
+
+                // 스크롤 동작을 시작합니다.
+                scrollInterval = setInterval(scrollPage, 100);
+
+                // 마우스 버튼을 놓을 때 스크롤 동작을 중지하고, 위로 스크롤하는 버튼을 숨깁니다.
+                $(document).mouseup(function () {
+                    scrolling = false;
+                    clearInterval(scrollInterval);
+                    $('#btnTop').fadeOut();
+                });
+            }
+        });
+
+        // 스크롤 페이지 함수 정의
+        function scrollPage() {
+            if (scrolling) {
+                $('html, body').animate({scrollTop: '+=150px'}, 100, function() {
+                    // 스크롤 동작 후 버튼이 화면 맨 위에 위치하지 않으면 보여줍니다.
+                    if ($(window).scrollTop() > 0) {
+                        $('#btnTop').fadeIn();
+                    }
+                });
+            }
+        }
+
+        // 제일 아래로 스크롤하는 함수 정의
+        function scrollToBottom() {
+            $('html, body').animate({scrollTop: $(document).height()}, 500);
+        }
+    });
+
+
+
+
+    </script>
+</head>
+<body>
+
+<div id="wrapper">
+    <header>
+        <div class="top">
+            <div>
+                <th:block th:if="${#authentication.principal == 'anonymousUser'}">
+                    <a th:href="@{/member/login}">로그인</a>
+                </th:block>
+
+                <th:block th:if="${#authentication.principal != 'anonymousUser'}">
+                    <a th:href="@{/member/logout}">로그아웃</a>
+                </th:block>
+
+                <th:block th:if="${#authentication.principal != 'anonymousUser'}">
+                    <th:block th:if="${#authentication.principal.user.role != 'USER'}">
+                        <a th:href="@{/admin/index}">관리자페이지</a>
+                    </th:block>
+                </th:block>
+                <a th:href="@{#}">회원가입</a>
+                <th:block th:if="${#authentication.principal != 'anonymousUser'}">
+                <th:block  th:if="${#authentication.principal.user.role == 'USER'}">
+                <a th:href="@{/my/home}">마이페이지</a>
+                <th:block>
+                </th:block>
+                <th:block th:if="${#authentication.principal != 'anonymousUser'}">
+                    <th:block th:if="${#authentication.principal.user.role == 'USER'}">
+                <a th:href="@{/product/cart}"><i class="fa fa-shopping-cart" aria-hidden="true"></i>&nbsp;장바구니</a>
+                    </th:block>
+                </th:block>
+                </th:block>
+                </th:block>
+            </div>
+        </div>
+        <div class="logo">
+            <div>
+
+                <a th:href="@{/}"><img src="../images/header_logo.png" alt="로고"/></a>
+                <form id="searchForm" th:action="@{/product/search}" onsubmit="return submitForm()">
+                    <input type="text" name="keyword" id="searchInput"/>
+                    <button><i class="fa fa-search"></i></button>
+                </form>
+            </div>
+
+        </div>
+        <div class="menu">
+            <div>
+                <ul>
+                    <li><a th:href="@{/product/list(board = 'a')}">히트상품</a></li>
+                    <li><a th:href="@{/product/list(board = 'b')}">추천상품</a></li>
+                    <li><a th:href="@{/product/list(board = 'c')}">최신상품</a></li>
+                    <li><a th:href="@{/product/list(board = 'd')}">할인상품</a></li>
+                </ul>
+                <ul>
+                    <li><a th:href="@{/product/coupon}">쿠폰존</a></li>
+
+                    <li><a th:href="@{/cs}">고객센터</a></li>
+                    <li><a th:href="@{/cs/faq}">FAQ</a></li>
+                </ul>
+            </div>
+        </div>
+    </header>
+</div>
+
+
+<div layout:fragment="content">
+
+</div>
+
+<footer>
+    <ul>
+        <li><a th:href="@{/company/index}">회사소개</a></li>
+        <li><a th:href="@{/policy/buyer}">서비스이용약관</a></li>
+        <li><a th:href="@{/policy/privacy}">개인정보처리방침</a></li>
+        <li><a th:href="@{/policy/finance}">전자금융거래약관</a></li>
+    </ul>
+    <div>
+        <p><img th:src="@{/images/footer_logo.png}" alt="로고"/></p>
+        <p>
+            <strong>(주)롯데ON</strong><br/>
+            서울특별시 송파구 올림픽로 300 롯데월드타워 26층 (역삼동 강남파이낸스센터)<br/>
+            대표이사 : 김사무엘상현, 정준호, 강성현<br/>
+            사업자등록번호 : 529-85-00774(롯데쇼핑(주) e커머스사업부)<br/>
+            통신판매업 신고 : 서울송파 제0158호<br>
+            호스팅 서비스사업자 : 롯데쇼핑(주) e커머스사업부
+        </p>
+        <p>
+            <strong>고객센터</strong><br/>
+            Tel : 1899-7000(유료) (평일 09:00~18:00)<br/>
+            Fax : 051-123-4567 | E-mail : lotteon@lotte.net<br/>
+        </p>
+    </div>
+</footer>
+<aside>
+    <a href="#" id="btnHome" onclick="back()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-arrow-left-square-fill" viewBox="0 0 16 16">
+            <path d="M16 14a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2zm-4.5-6.5H5.707l2.147-2.146a.5.5 0 1 0-.708-.708l-3 3a.5.5 0 0 0 0 .708l3 3a.5.5 0 0 0 .708-.708L5.707 8.5H11.5a.5.5 0 0 0 0-1"/>
+        </svg>
+    </a>
+    <a href="#" id="btnTop" onclick="topButton()" >
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-arrow-up-square-fill" viewBox="0 0 16 16">
+            <path d="M2 16a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2zm6.5-4.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 1 0"/>
+        </svg>
+    </a>
+    <a href="#" id="btnDown">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-arrow-down-square-fill" viewBox="0 0 16 16">
+            <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm6.5 4.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 10.293V4.5a.5.5 0 0 1 1 0"/>
+        </svg>
+    </a>
+</aside>
+</body>
+</html>

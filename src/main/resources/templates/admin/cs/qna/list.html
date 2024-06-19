@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/admin/layout/adminLayout.html}">
+<style>
+    .faq-list-checkbox{
+        width: 20px;
+    }
+</style>
+<section id="admin-cs-faq" layout:fragment="content">
+    <script>
+        window.onload = function() {
+            const all = document.getElementById('all');
+            const checkAll = document.querySelectorAll('.check');
+
+            // 전체 선택
+            all.onclick = function () {
+                checkAll.forEach(function (item) {
+                    item.checked = all.checked;
+                });
+            };
+
+            // 선택 삭제
+            const selectDelete = document.getElementById('selectDelete');
+            selectDelete.onclick = async function (e) {
+                e.preventDefault();
+
+                var selectedNoList = [];
+
+                checkAll.forEach(function (item) {
+                    if (item.checked) {
+                        selectedNoList.push(parseInt(item.value));
+                    }
+                });
+
+                if (selectedNoList.length === 0) {
+                    alert('선택된 상품이 없습니다.');
+                } else {
+                    if (confirm('삭제 하시겠습니까!?')) {
+                        const jsonData = {list: selectedNoList}
+                        const result = await fetchGet('/lotteshop/admin/cs//delete', jsonData);
+                        console.log(result.result);
+                    }
+                    location.reload();
+                }
+            };
+        }
+        // 카테고리별 조회
+        function redirectToCate1Cate2(){
+            const Cate1 = document.querySelector("select[name='Cate1']").value;
+            const Cate2 = document.querySelector("select[name='Cate2']").value;
+
+            console.log("Cate1 : " + Cate1);
+            console.log("Cate2 : " + Cate2);
+        }
+
+        // 타입별 카테조회
+        function firstOption(){
+            const cate1Option = event.target;
+            const cate1Value = cate1Option.value; // 내가 함수를 호출한 현재 태그의 value 값
+            const faqCate2 = document.getElementsByName('qnaCate2')[0];
+
+            console.log(cate1Value);
+
+            if(cate1Value == 'user'){
+                //원래 있던 option 삭제
+                const faqCate2Child = faqCate2.childNodes; // name이 cate2인 select 태그 안에 있는 option 태그 전부
+                Array.from(faqCate2Child).forEach(function (child){
+                    child.remove();
+                })
+
+                //새로운옵션삽입
+                const cate2Option = `<option>유형1</option>
+                                         <option value="lotteOners">롯데오너스</option>
+                                         <option value="info">정보확인/변경</option>
+                                         <option value="reg">회원가입</option>
+                                         <option value="grade">회원등급</option>
+                                         <option value="del">회원탈퇴</option>`
+
+                faqCate2.insertAdjacentHTML('beforeend', cate2Option);
+            }else if (cate1Value == 'event'){
+                const faqCate2Child = faqCate2.childNodes; // name이 cate2인 select 태그 안에 있는 option 태그 전부
+                Array.from(faqCate2Child).forEach(function (child){
+                    child.remove();
+                })
+
+                //새로운옵션삽입
+                const cate2Option = `<option>유형1</option>
+                                         <option value="lpoint">L.POINT</option>
+                                         <option value="lstamp">L.STAMP</option>
+                                         <option value="review">리뷰/체험단</option>
+                                         <option value="onmile">온마일리지</option>
+                                         <option value="event">이벤트/쿠폰</option>`
+
+                faqCate2.insertAdjacentHTML('beforeend', cate2Option);
+            }else if (cate1Value == 'order'){
+                const faqCate2Child = faqCate2.childNodes;
+                Array.from(faqCate2Child).forEach(function (child){
+                    child.remove();
+                })
+
+                //새로운옵션삽입
+                const cate2Option = `<option>유형1</option>
+                                         <option value="lpay">L.PAY</option>
+                                         <option value="etc">기타 결제수단</option>
+                                         <option value="mutong">무통장입금</option>
+                                         <option value="ord">주문/결제방법</option>
+                                         <option value="card">신용카드 자동결제</option>
+                                         <option value="ordlist">주문내역확인/변경</option>`
+
+                faqCate2.insertAdjacentHTML('beforeend', cate2Option);
+            }else if (cate1Value == 'delivery'){
+                const faqCate2Child = faqCate2.childNodes;
+                Array.from(faqCate2Child).forEach(function (child){
+                    child.remove();
+                })
+
+                //새로운옵션삽입
+                const cate2Option = `<option>유형1</option>
+                                         <option value="buy">구매확정/미수령신고</option>
+                                         <option value="delp">배송비</option>
+                                         <option value="delm">배송일정/방법</option>
+                                         <option value="delinfo">배송정보변경</option>
+                                         <option value="gift">선물포장</option>`
+
+                faqCate2.insertAdjacentHTML('beforeend', cate2Option);
+            }else if (cate1Value == 'cancel'){
+                const faqCate2Child = faqCate2.childNodes;
+                Array.from(faqCate2Child).forEach(function (child){
+                    child.remove();
+                })
+
+                //새로운옵션삽입
+                const cate2Option = `<option>유형1</option>
+                                         <option value="ordcancel">주문취소</option>
+                                         <option value="refund">환불방법/일정</option>
+                                         <option value="as">AS접수/일정</option>
+                                         <option value="asp">교환/반품 배송비</option>
+                                         <option value="change">교환접수/일정</option>
+                                         <option value="returns">반품접수/일정</option>`
+
+                faqCate2.insertAdjacentHTML('beforeend', cate2Option);
+            }else if (cate1Value == 'receipt'){
+                const faqCate2Child = faqCate2.childNodes;
+                Array.from(faqCate2Child).forEach(function (child){
+                    child.remove();
+                })
+
+                //새로운옵션삽입
+                const cate2Option = `<option>유형1</option>
+                                         <option value="etcord">기타제증빙</option>
+                                         <option value="cashreceipt">현금영수증</option>
+                                         <option value="taxreceipt">세금계산서</option>`
+
+                faqCate2.insertAdjacentHTML('beforeend', cate2Option);
+
+            }
+
+            const search = document.getElementById('search');
+            search.onclick=function (e){
+                e.preventDefault();
+                const cate1 =document.getElementById('qnaCate1').value;
+                const cate2 =document.getElementById('qnaCate2').value;
+
+                window.location.href='/lotteshop/admin/cs/qna/list?cate1='+cate1+'&cate2='+cate2;
+            }
+        }
+
+
+    </script>
+    <nav>
+        <h3>QNA 보기</h3>
+        <p>
+            HOME > 고객센터 > <strong>QNA 관리</strong>
+        </p>
+    </nav>
+
+    <section>
+        <div>
+            <form id="deleteSelectedForm" th:action="@{/admin/cs/qna/delete/selectDelete}" method="post">
+                <input type="hidden" id="selectedNoList" name="selectedNoList" />
+
+            </form>
+
+
+            <article>
+                <th:block th:if="${#authentication.principal.user.role == 'ADMIN'}">
+                <h3>
+                    <a th:if="${adminCsQna.getGruop() == 'qna'}" th:href="@{/admin/cs/qna/list}" style="border: 1px solid gray; font-size: 15px; padding: 2px; background-color: greenyellow">1:1 문의하기</a>
+                    <a th:if="${adminCsQna.getGruop() != 'qna'}" th:href="@{/admin/cs/qna/list}" style="border: 1px solid gray; font-size: 15px; padding: 2px">1:1 문의하기</a>
+                    <a th:if="${adminCsQna.getGruop() == 'product'}" th:href="@{/admin/cs/qna/list(group = product)}" style="border: 1px solid gray; font-size: 15px;  padding: 2px; background-color: greenyellow" >상품 문의</a>
+                    <a th:if="${adminCsQna.getGruop() != 'product'}" th:href="@{/admin/cs/qna/list(group = product)}" style="border: 1px solid gray; font-size: 15px;  padding: 2px">상품 문의</a>
+                </h3>
+
+                <!-- 카테고리별 조회 -->
+                <div th:if="${adminCsQna.getGruop() != 'product'}">
+                    <select name="qnaCate1"  id="qnaCate1" onchange="firstOption()">
+                        <option>유형1</option>
+                        <option value="user">회원</option>
+                        <option value="event">이벤트/쿠폰</option>
+                        <option value="order">주문/결제</option>
+                        <option value="delivery">배송</option>
+                        <option value="cancel">취소/반품/교환</option>
+                        <option value="receipt">거래증빙서류</option>
+                    </select>
+                    <select name="qnaCate2" id="qnaCate2" onchange="redirectToCate1Cate2()">
+                        <option>유형2</option>
+                        <option value="info">롯데오너스</option>
+                        <option value="info">정보확인/변경</option>
+                        <option value="reg">회원가입</option>
+                        <option value="grade">회원등급</option>
+                        <option value="del">회원탈퇴</option>
+                    </select>
+                    <input type="button" id="search" value="검색"/>
+                </div>
+                </th:block >
+                <br>
+                    <th:block th:if="${adminCsQna.getGruop() == 'product' }">
+                        <table border="0" id="productCss">
+                            <tr>
+                                <th style="width: 20px">번호</th>
+                                <th>문의채널</th>
+                                <th>상품명</th>
+                                <th>제목</th>
+                                <th>작성일</th>
+                                <th>관리</th>
+                                <th>상태</th>
+                            </tr>
+                        <tr  th:each="prodQna, index : ${adminCsQna.dtoList4}">
+                            <td style="width: 20px" class="nonono" th:text="${prodQna.no}"></td>
+                            <td class="cate" th:text="${prodQna.cate}"></td>
+                            <td th:if="${prodQna.productName.length()<5}" class="type" th:text="${prodQna.productName}"></td>
+                            <td th:if="${prodQna.productName.length()>=5}" class="type" th:text="${#strings.substring(prodQna.productName,0,4)+'..'}"></td>
+                            <td class="tit" th:text="${prodQna.content}"></td>
+                            <td class="date" th:text="${#strings.substring(prodQna.rdate,0,10)}"></td>
+                            <td>
+                                <a th:href="@{/admin/cs/qna/reply2(no=${prodQna.no})}">[답변]</a>
+                                <a th:href="@{/admin/cs/qna/delete(prodQnaNo=${prodQna.no}, type=1)}" onclick="return confirm('정말 삭제하시겠습니까?')">[삭제]</a>
+                            </td>
+                            <td class="status">
+                                <th:block th:if="${prodQna.status1 == '답변 대기중'}">
+                                    <p style="font-size: 16px; color: #0D3A46"  th:text="${prodQna.status1}"></p>
+                                </th:block>
+                                <th:block th:if="${prodQna.status1 != '답변 대기중'}">
+                                    <p  style="font-size: 16px; color: #4CAF50 "  th:text="${prodQna.status1}"></p>
+                                </th:block>
+                            </td>
+                        </tr>
+                        </table>
+                    </th:block>
+                    <th:block th:if="${adminCsQna.getGruop() != 'product' }">
+                        <table border="0">
+                            <tr>
+                                <th  style="width: 20px;">번호</th>
+                                <th>문의채널</th>
+                                <th>문의유형</th>
+                                <th>제목</th>
+                                <th>작성일</th>
+                                <th>관리</th>
+                                <th>상태</th>
+                            </tr>
+                        <tr  th:each="csQna, index : ${adminCsQna.dtoList3}">
+                            <td style="width: 20px;" class="no" th:text="${csQna.no}"></td>
+                            <td class="cate" th:text="${csQna.cate1}"></td>
+                            <td class="type" th:text="${csQna.cate2}"></td>
+                            <td class="tit" th:text="${csQna.title}"></td>
+                            <td class="date" th:text="${csQna.rdate}"></td>
+                            <td>
+                                <a th:href="@{/admin/cs/qna/reply(no=${csQna.no})}">[답변]</a>
+                                <a th:href="@{/admin/cs/qna/delete(prodQnaNo=${csQna.no},  type=2)}" onclick="return confirm('정말 삭제하시겠습니까?')">[삭제]</a>
+                            </td>
+                            <td class="status">
+                                <th:block th:if="${csQna.status == '답변 대기중'}">
+                                    <p style="font-size: 16px; color: #0D3A46"  th:text="${csQna.status}"></p>
+                                </th:block>
+                                <th:block th:if="${csQna.status != '답변 대기중'}">
+                                    <p  style="font-size: 16px; color: #4CAF50 "  th:text="${csQna.status}"></p>
+                                </th:block>
+                            </td>
+                        </tr>
+                        </table>
+                    </th:block>
+
+                <br>
+                <br>
+                <div class="paging" style="text-align: center" >
+                    <span class="prev" th:if="${adminCsQna.prev}">
+                    <a
+                       th:href="@{/admin/cs/qna/list(pg=${adminCsQna.start - 1}, group=${adminCsQna.getGruop()} )}"
+                       >이전</a></span>
+                    <th:block th:each="num:${#numbers.sequence(adminCsQna.start, adminCsQna.end)}">
+                        <span class="num">
+                        <th:block th:if="${num == adminCsQna.pg}">
+                            <a th:href="@{/admin/cs/qna/list( pg=${num } , group=${adminCsQna.getGruop()} )}"
+                               style="color: blue">[[${num}]]</a>
+                        </th:block>
+                            </span>
+                        <span class="num">
+                        <th:block th:if="${num != adminCsQna.pg}">
+                            <a th:href="@{/admin/cs/qna/list( pg=${num } , group=${adminCsQna.getGruop()} )}">[[${num}]]</a>
+                        </th:block>
+                              </span>
+                    </th:block>
+                    <span  th:if="${adminCsQna.next}"     class="next">
+                    <a
+                       th:href="@{/admin/cs/qna/list( pg=${adminCsQna.end+1},group=${adminCsQna.getGruop()})}"
+                       class="next">다음</a>
+                        </span>
+                </div>
+
+
+            </article>
+        </div>
+    </section>
+</section>
+</html>

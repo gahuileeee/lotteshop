@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/admin/layout/adminLayout.html}">
+
+<section id="admin-cs-notice" layout:fragment="content">
+    <nav>
+        <h3>고객센터</h3>
+        <p>
+            HOME > 고객센터 > <strong>공지사항</strong>
+        </p>
+    </nav>
+
+    <section>
+        <div>
+            <table class="">
+                <tr>
+                    <td>공지 유형</td>
+                    <td>[[${view.cate1}]]-[[${view.cate2}]]</td>
+                </tr>
+                <tr>
+                    <td>제목: </td>
+                    <td class="faq-title">
+                        <span>[[${view.title}]]</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>내용:</td>
+                    <td>
+                        <span>[[${view.content}]]</span>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </section>
+</section>
+</html>

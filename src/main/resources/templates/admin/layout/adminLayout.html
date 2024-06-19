@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org"
+       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" >
+<head>
+    <meta charset="UTF-8">
+    <title>롯데ON::4조 관리자 페이지</title>
+    <link rel="shortcut icon" type="image/x-icon" th:href="@{/images/favicon.ico}"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://kit.fontawesome.com/20962f3e4b.js" crossorigin="anonymous"></script>
+    <script th:src="@{/admin/js/gnb.js}"></script>
+    <script   type="text/javascript" th:src="@{/js/util.js}" ></script>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
+    <link rel="stylesheet" th:href="@{/admin/css/admin.css}">
+
+    <!-- 차트 링크 -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+
+    <script>
+        $(function() {
+            $("#tabs").tabs();
+
+            // 팝업 닫기
+            $('.btnClose').click(function(){
+                $(this).closest('.popup').removeClass('on');
+            });
+
+            // 배너등록 팝업 띄우기
+            $('.btnRegister').click(function(e){
+                e.preventDefault();
+                $('#bannerRegister').addClass('on');
+            });
+        });
+
+    </script>
+</head>
+<body>
+<div id="admin-wrapper">
+    <header>
+        <div>
+            <a th:href="@{/admin/index}" class="logo"><img th:src="@{/admin/images/admin_logo.png}" alt="admin_logo"/></a>
+            <p>
+
+                <span th:if="${#authentication.principal.user.role == 'ADMIN'}">[[${#authentication.principal.user.name}]]님 반갑습니다.</span>
+                <span th:if="${#authentication.principal.user.role != 'ADMIN'}">[[${#authentication.principal.user.sellerName}]]님 반갑습니다.</span>
+
+                <a th:href="@{/index}">HOME |</a>
+                <a th:href="@{/member/logout}">로그아웃 |</a>
+
+                <a href="#">고객센터</a>
+            </p>
+        </div>
+    </header>
+    <main>
+        <aside>
+            <!-- Global Navigation Bar -->
+            <ul id="gnb">
+                <li th:if="${#authentication.principal.user.role == 'ADMIN'}">
+                    <a href="#"><i class="fa fa-cogs" aria-hidden="true"></i>환경설정</a>
+                    <ol>
+                        <li><a th:href="@{/admin/config/info}">기본환경설정</a></li>
+                        <li><a th:href="@{/admin/config/banner}">배너관리</a></li>
+                    </ol>
+                </li>
+                <li th:if="${#authentication.principal.user.role == 'ADMIN'}">
+                    <a href="#"><i class="fas fa-store" aria-hidden="true"></i>상점관리</a>
+                    <ol>
+                        <li><a th:href="@{/admin/seller/seller_status}">판매자현황</a></li>
+                    </ol>
+                </li>
+                <li th:if="${#authentication.principal.user.role == 'ADMIN'}">
+                    <a href="#"><i class="fa fa-users" aria-hidden="true"></i>회원관리</a>
+                    <ol>
+
+                        <li><a th:href="@{/admin/member/list}">회원현황</a></li>
+
+                    </ol>
+                </li>
+                <li>
+                    <a href="#"><i class="fas fa-box-open" aria-hidden="true"></i>상품관리</a>
+                    <ol>
+                        <li><a th:href="@{/admin/product/list}">상품현황</a></li> <!--manager, admin 다르게 -->
+                        <li th:if="${#authentication.principal.user.role == 'ADMIN'}"><a th:href="@{/admin/product/register}">상품등록</a></li>
+                        <li th:if="${#authentication.principal.user.role == 'ADMIN'}"><a th:href="@{/admin/coupon/register}">쿠폰관리</a></li>
+                    </ol>
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-credit-card" aria-hidden="true"></i>주문관리</a>
+                    <ol>
+                        <li><a th:href="@{/admin/orderList}">주문현황</a></li>
+                        <li><a th:href="@{/admin/sale(state ='week')}">매출현황</a></li>
+                    </ol>
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>고객센터</a>
+                    <ol>
+                        <li th:if="${#authentication.principal.user.role == 'ADMIN'}"><a th:href="@{/admin/cs/notice/list}">공지사항 관리</a></li>
+                        <li ><a th:href="@{/admin/cs/qna/list}">QNA 관리</a></li>  <!--manager, admin 다르게 -->
+                        <li th:if="${#authentication.principal.user.role == 'ADMIN'}"><a th:href="@{/admin/cs/faq/list}">FAQ 관리</a></li>
+                    </ol>
+                </li>
+                <li th:if="${#authentication.principal.user.role == 'ADMIN'}">
+
+                    <a href="#" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i>블로그관리</a>
+                    <ol>
+                        <li th:if="${#authentication.principal.user.role == 'ADMIN'}"><a th:href="@{/admin/blogList}">이동하기</a></li>
+                    </ol>
+                </li>
+            </ul>
+        </aside >
+        <section layout:fragment="content">
+
+        </section>
+    </main>
+    <footer>
+        <div>
+            <p>Copyright ©lotteon.com All rights reserved. [[${appInfo.name}]]-[[${appInfo.version}]] </p>
+        </div>
+    </footer>
+</div>
+
+</body>
+</html>

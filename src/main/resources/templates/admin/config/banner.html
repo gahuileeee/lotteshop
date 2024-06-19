@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/admin/layout/adminLayout.html}">
+
+<section id="admin-config-banner" layout:fragment="content">
+    <script>
+
+        window.onload = function () {
+
+            const checkBoxes = document.querySelectorAll('.checkBoxes');
+            const totalCheckBox = document.getElementsByName('all')[0];
+            let checkedTurn = 0;
+
+            const btnDeletes = document.querySelectorAll('.btnNegative');//input type = Button
+
+            btnDeletes.forEach(function (btnDelete){
+                btnDelete.onclick = function (e){
+                    deleteSelectedBanners();
+                }
+            })
+
+            //전체 선택 및 해제
+            document.querySelectorAll('section[id^="tabs"] input[type="checkbox"][name="all"]').forEach(function(checkbox) {
+                checkbox.addEventListener('click', function() {
+                    // 체크박스가 클릭되었을 때 동작하는 코드
+                    // 클릭된 체크박스의 부모 요소인 section 요소를 찾음
+                    var section = checkbox.closest('section[id^="tabs"]');
+                    // section 요소 내부의 모든 체크박스를 선택 혹은 해제
+                    var sectionCheckboxes = section.querySelectorAll('input[type="checkbox"]');
+                    sectionCheckboxes.forEach(function(cb) {
+                        cb.checked = checkbox.checked;
+                    });
+                });
+            });
+
+
+            function deleteSelectedBanners() {
+
+                checkBoxes.forEach(check => {
+                    if (check.checked) {
+                        const row = check.closest('tr');
+                        //const bannerNo = row.querySelector('[id="bannerNo"]').textContent;
+                        const bannerNoElement = row.querySelector('.bannerNo');
+                        const bannerNo = bannerNoElement.textContent;
+                        // 배너번호를 확인
+                        console.log('제발 찍혀라!! BannerNo : ' + bannerNo);
+                        row.remove();
+
+                        const jsonData = {
+                            "bannerNo" :bannerNo
+                        };
+
+                        fetch("/lotteshop/banner/delete", {
+                            method: 'POST',
+                            headers: {'Content-Type': 'application/json'},
+                            body: JSON.stringify(jsonData)
+                        })
+                            .then(response => {
+                                if (response.ok) {
+                                    console.log("삭제가 성공!여기는 banner.html");
+                                } else {
+                                    throw new Error("삭제 실패");
+                                }
+                            })
+                            .catch(err => console.log(err));
+                    }
+                });
+            }
+        }
+
+        function activateBanner(bannerNo) {
+
+            fetch(`/lotteshop/banner/active?bannerNo=${bannerNo}`)
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    } else {
+                        return response.text().then(errorMessage => {
+                            throw new Error(errorMessage);
+                        });
+                    }
+                })
+                .then(data => {
+                    console.log(data);//잘 받은 데이터 확인가능
+                    alert("활성화가 되었습니다.");
+                    window.location.href=`/lotteshop/admin/config/banner`;
+
+                })
+                .catch(error => {
+                    console.error('Error:', error.message);
+                    alert(error.message);
+                });
+        }
+
+        function inactivateBanner(bannerNo) {
+
+            fetch(`/lotteshop/banner/inactive?bannerNo=${bannerNo}`)
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    } else {
+                        throw new Error('네트워크 오류');
+                    }
+                })
+                .then(data => {
+                    if (data.success) {
+                        alert('배너가 비활성화되었습니다.');
+                        window.location.href=`/lotteshop/admin/config/banner`;
+                    } else {
+                        alert('배너 활성화에 실패하였습니다.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('서버 오류가 발생하였습니다.');
+                });
+        }
+
+
+
+    </script>
+
+    <nav>
+        <h3>배너관리</h3>
+        <p>
+            HOME > 환경설정 > <strong>배너관리</strong>
+        </p>
+    </nav>
+    <article id="tabs">
+        <ul>
+            <li><a href="#tabs1">메인 상단 배너</a></li>
+            <li><a href="#tabs2">메인 슬라이더 배너</a></li>
+            <li><a href="#tabs3">상품 상세보기 배너</a></li>
+            <li><a href="#tabs4">마이페이지 배너</a></li>
+        </ul>
+
+        <!-- 메인 상단 배너-->
+        <section id="tabs1">
+            <h4>메인 상단배너</h4>
+            <p>
+                쇼핑몰 메인 상단에 출력되는 배너입니다.
+            </p>
+            <table>
+                <tr>
+                    <th><input type="checkbox" name="all"/></th>
+                    <th>배너번호</th>
+                    <th>이미지</th>
+                    <th>배너정보</th>
+                    <th>배너위치</th>
+                    <th>시작날짜</th>
+                    <th>종료날짜</th>
+                    <th>시작시간</th>
+                    <th>종료시간</th>
+                    <th>조회</th>
+                    <th>관리</th>
+                    <th>활성</th>
+                </tr>
+
+                <tr th:each=" bannerList :${banner1}">
+                    <td><input type="checkbox" name="배너번호" class="checkBoxes"/></td>
+                    <td th:text="${bannerList.bannerNo}" class="bannerNo">201603292</td>
+                    <td><img th:src="@{/uploads/__${bannerList.img_1200}__}" class="thumb"></td>
+                    <td>
+                        <ul>
+                            <li class="name" th:text="${bannerList.name}">배너이름</li>
+                            <li class="size">크기 : 1200 x 80</li>
+                            <li class="size" th:text="${bannerList.color}">배경색 : #e4dfdf</li>
+                            <li class="link" th:text="${bannerList.link}"><a href="#">배너링크</a></li>
+                        </ul>
+                    </td>
+                    <td>메인 - 상단</td>
+                    <td th:text="${bannerList.d_begin}">2023/01/01</td>
+                    <td th:text="${bannerList.d_end}">2023/01/07</td>
+                    <td th:text="${bannerList.t_begin}">13:00</td>
+                    <td th:text="${bannerList.t_end}">14:00</td>
+                    <td th:text="${bannerList.hit}">12</td>
+                    <td>
+                        <a href="#" th:onclick="'inactivateBanner(\'' + ${bannerList.bannerNo} + '\');'" class="inactiveButton">[비활성]</a>
+                        <a href="#" th:onclick="'activateBanner(\'' + ${bannerList.bannerNo} + '\');'" class="activeButton">[활성]</a>
+                    </td>
+                    <td th:text="${bannerList.status=='1'? 'O' : 'X'}"></td>
+                </tr>
+            </table>
+            <input type="button" class="btnNegative" value="선택삭제"/>
+            <input type="button" class="btnPositive btnRegister" value="등록하기"/>
+
+        </section>
+
+        <!-- 메인 슬라이더 배너-->
+        <section id="tabs2">
+            <h4>메인 슬라이더배너</h4>
+            <p>
+                쇼핑몰 메인 슬라이더 영역에 노출되는 배너입니다.
+            </p>
+            <table>
+                <tr>
+                    <th><input type="checkbox" name="all"/></th>
+                    <th>배너번호</th>
+                    <th>이미지</th>
+                    <th>배너정보</th>
+                    <th>배너위치</th>
+                    <th>시작날짜</th>
+                    <th>종료날짜</th>
+                    <th>시작시간</th>
+                    <th>종료시간</th>
+                    <th>조회</th>
+                    <th>관리</th>
+                    <th>활성</th>
+                </tr>
+                <tr th:each=" bannerList :${banner2}">
+                    <td><input type="checkbox" name="배너번호" class="checkBoxes"/></td>
+                    <td th:text="${bannerList.bannerNo}" class="bannerNo">201603292</td>
+                    <td><img th:src="@{/uploads/__${bannerList.img_985}__}" class="thumb"></td>
+                    <td>
+                        <ul>
+                            <li class="name" th:text="${bannerList.name}">배너이름</li>
+                            <li class="size">크기 : 985 x 447</li>
+                            <li class="size" th:text="${bannerList.color}">배경색 : #e4dfdf</li>
+                            <li class="link" th:text="${bannerList.link}"><a href="#">배너링크</a></li>
+                        </ul>
+                    </td>
+                    <td>메인 - 슬라이더</td>
+                    <td th:text="${bannerList.d_begin}">2023/01/01</td>
+                    <td th:text="${bannerList.d_end}">2023/01/07</td>
+                    <td th:text="${bannerList.t_begin}">13:00</td>
+                    <td th:text="${bannerList.t_end}">14:00</td>
+                    <td th:text="${bannerList.hit}">12</td>
+                    <td>
+                        <a href="#" th:onclick="'inactivateBanner(\'' + ${bannerList.bannerNo} + '\');'" class="inactiveButton">[비활성]</a>
+                        <a href="#" th:onclick="'activateBanner(\'' + ${bannerList.bannerNo} + '\');'" class="activeButton">[활성]</a>
+                    </td>
+                    <td th:text="${bannerList.status=='1'? 'O' : 'X'}"></td>
+                </tr>
+            </table>
+            <input type="button" class="btnNegative" value="선택삭제"/>
+            <input type="button" class="btnPositive btnRegister" value="등록하기"/>
+        </section>
+        <!-- 상품 상세보기 배너-->
+        <section id="tabs3">
+            <h4>상품 상세보기 배너</h4>
+            <p>
+                상품 상세보기 상품수량 입력 상단부에 노출되는 배너입니다.
+            </p>
+            <table>
+                <tr>
+                    <th><input type="checkbox" name="all"/></th>
+                    <th>배너번호</th>
+                    <th>이미지</th>
+                    <th>배너정보</th>
+                    <th>배너위치</th>
+                    <th>시작날짜</th>
+                    <th>종료날짜</th>
+                    <th>시작시간</th>
+                    <th>종료시간</th>
+                    <th>조회</th>
+                    <th>관리</th>
+                    <th>활성</th>
+                </tr>
+                <tr th:each=" bannerList :${banner3}">
+                    <td><input type="checkbox" name="배너번호" class="checkBoxes"/></td>
+                    <td th:text="${bannerList.bannerNo}" class="bannerNo">201603292</td>
+                    <td><img th:src="@{/uploads/__${bannerList.img_456}__}" class="thumb"></td>
+                    <td>
+                        <ul>
+                            <li class="name" th:text="${bannerList.name}">배너이름</li>
+                            <li class="size">크기 : 456 x 60</li>
+                            <li class="size" th:text="${bannerList.color}">배경색 : #e4dfdf</li>
+                            <li class="link" th:text="${bannerList.link}"><a href="#">배너링크</a></li>
+                        </ul>
+                    </td>
+                    <td>상품-상세보기</td>
+                    <td th:text="${bannerList.d_begin}">2023/01/01</td>
+                    <td th:text="${bannerList.d_end}">2023/01/07</td>
+                    <td th:text="${bannerList.t_begin}">13:00</td>
+                    <td th:text="${bannerList.t_end}">14:00</td>
+                    <td th:text="${bannerList.hit}">12</td>
+                    <td>
+                        <a href="#" th:onclick="'inactivateBanner(\'' + ${bannerList.bannerNo} + '\');'" class="inactiveButton">[비활성]</a>
+                        <a href="#" th:onclick="'activateBanner(\'' + ${bannerList.bannerNo} + '\');'" class="activeButton">[활성]</a>
+                    </td>
+                    <td th:text="${bannerList.status=='1'? 'O' : 'X'}"></td>
+                </tr>
+            </table>
+            <input type="button" class="btnNegative" value="선택삭제"/>
+            <input type="button" class="btnPositive btnRegister" value="등록하기"/>
+        </section>
+
+
+        <!-- 마이페이지 배너-->
+        <section id="tabs4">
+            <h4>마이페이지 배너</h4>
+            <p>
+                마이페이지 하위 모든 페이지에서 노출되는 배너입니다.
+            </p>
+            <table>
+                <tr>
+                    <th><input type="checkbox" name="all"/></th>
+                    <th>배너번호</th>
+                    <th>이미지</th>
+                    <th>배너정보</th>
+                    <th>배너위치</th>
+                    <th>시작날짜</th>
+                    <th>종료날짜</th>
+                    <th>시작시간</th>
+                    <th>종료시간</th>
+                    <th>조회</th>
+                    <th>관리</th>
+                    <th>활성</th>
+                </tr>
+                <tr th:each=" bannerList :${banner4}">
+                    <td><input type="checkbox" name="배너번호" class="checkBoxes"/></td>
+                    <td th:text="${bannerList.bannerNo}" class="bannerNo">201603292</td>
+                    <td><img th:src="@{/uploads/__${bannerList.img_810}__}" class="thumb"></td>
+                    <td>
+                        <ul>
+                            <li class="name" th:text="${bannerList.name}">배너이름</li>
+                            <li class="size">크기 : 810 x 86</li>
+                            <li class="size" th:text="${bannerList.color}">배경색 : #e4dfdf</li>
+                            <li class="link" th:text="${bannerList.link}"><a href="#">배너링크</a></li>
+                        </ul>
+                    </td>
+                    <td>마이페이지</td>
+                    <td th:text="${bannerList.d_begin}">2023/01/01</td>
+                    <td th:text="${bannerList.d_end}">2023/01/07</td>
+                    <td th:text="${bannerList.t_begin}">13:00</td>
+                    <td th:text="${bannerList.t_end}">14:00</td>
+                    <td th:text="${bannerList.hit}">12</td>
+                    <td>
+                        <a href="#" th:onclick="'inactivateBanner(\'' + ${bannerList.bannerNo} + '\');'" class="inactiveButton">[비활성]</a>
+                        <a href="#" th:onclick="'activateBanner(\'' + ${bannerList.bannerNo} + '\');'" class="activeButton">[활성]</a>
+                    </td>
+                    <td th:text="${bannerList.status=='1'? 'O' : 'X'}"></td>
+                </tr>
+
+            </table>
+            <input type="button" class="btnNegative" value="선택삭제"/>
+            <input type="button" class="btnPositive btnRegister" value="등록하기"/>
+        </section>
+    </article>
+    <p class="ico info">
+        <strong>Tip!</strong>
+        전자상거래 등에서의 상품 등의 정보제공에 관한 고시에 따라 총 35개 상품군에 대해 상품 특성 등을 양식에 따라 입력할 수 있습니다.
+    </p>
+
+    <div id="bannerRegister" class="popup">
+        <div>
+            <nav>
+                <h1>배너등록</h1>
+                <button class="btnClose">X</button>
+            </nav>
+            <section>
+                <article>
+                    <h3>배너 정보입력</h3>
+                    <form th:action="@{/banner/register}" method="post" enctype="multipart/form-data">
+                        <input type="hidden" name="status" value="0">
+
+                        <table border="0">
+                            <tr>
+                                <td>배너이름</td>
+                                <td>
+                                    <p>배너명을 입력하세요.</p>
+                                    <input type="text" name="name" id="name" placeholder="배너명 입력"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>배너파일</td>
+                                <td>
+                                    <p>배너 이미지 파일을 추가하세요.</p>
+                                    <input type="file" name="multImage1" placeholder="배너 이미지 파일 선택"/>
+                                </td>
+                            </tr>
+                            <tr>
+                            <tr>
+                                <td>배경색</td>
+                                <td>
+                                    <p>메인 상단 배너에 적용되는 배너 배경색입니다. ex) #ffff00</p>
+                                    <input type="text" name="color" id="color" placeholder="배너 배경색 입력"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>배너링크</td>
+                                <td>
+                                    <p>배너를 클릭했을 떄 이동할 페이지 링크주소를 입력하세요.</p>
+                                    <input type="text" name="link" id="link" placeholder="링크주소 입력"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>배너위치</td>
+                                <td>
+                                    <p>배너가 노출되는 위치를 선택하십시요.</p>
+                                    <select name="position">
+                                        <option value="0">선택</option>
+                                        <option value="MAIN1">메인-상단</option>
+                                        <option value="MAIN2">메인-슬라이더</option>
+                                        <option value="PRODUCT1">상품-상세보기</option>
+                                        <option value="MY1">마이페이지</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>배너 노출날짜</td>
+                                <td>
+                                    <p>배너가 노출되는 기간을 선택하십시요.</p>
+                                    <input type="date" name="d_begin" id="d_begin"/>
+                                    <span>~</span>
+                                    <input type="date" name="d_end" id="d_end"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>배너 노출시간</td>
+                                <td>
+                                    <p>배너가 노출되는 시간을 선택하십시요.</p>
+                                    <input type="time" name="t_begin" id="t_begin"/>
+                                    <span>~</span>
+                                    <input type="time" name="t_end" id="t_end"/>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <div>
+                            <input type="submit" class="btnPositive" value="등록하기"/>
+                        </div>
+                    </form>
+                </article>
+            </section>
+        </div>
+    </div>
+</section>
+</html>

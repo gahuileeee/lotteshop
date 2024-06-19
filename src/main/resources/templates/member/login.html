@@ -1,56 +1,86 @@
 <!DOCTYPE html>
 
-<html lang="en">
-<head>
-    <meta charset="UTF-8">    
-    <title>롯데ON::롯데 온라인 쇼핑몰</title>
-    <link rel="shortcut icon" type="image/x-icon" href="../images/favicon.ico" />
-    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css">
-    <link rel="stylesheet" href="../css/common.css"/>
-    <link rel="stylesheet" href="./css/member.css"/>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-    <script src="https://kit.fontawesome.com/20962f3e4b.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
-</head>
-<body>
-    <div id="wrapper">
-        <header>
-            <div class="top">
-                <div>
-                    <a href="./member/login.html">로그인</a>
-                    <a th:href="@{#}">회원가입</a>
-                    <a th:href="@{#}">마이페이지</a>
-                    <a th:href="@{#}"><i class="fa fa-shopping-cart" aria-hidden="true"></i>&nbsp;장바구니</a>
-                </div>
-            </div>
-            <div class="logo">
-                <div>
-                    <a href="../index.html"><img src="../images/header_logo.png" alt="로고"/></a>
-                </div>
-            </div>
-        </header>
-        <main id="member">
-            <div class="login">
-                <nav>
-                    <h1>로그인</h1>                    
-                </nav>
-                
-				<form action="#">
-
-
 <html
         xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
         layout:decorate="~{/member/layout/memberLayout.html}">
 
 <div class="login" layout:fragment="content">
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // key 가져온 cookieName 을 넣어줌
+            const key = getCookie("key");
+            const inputId = document.getElementsByName("uid")[0];
+            console.log(inputId);
+
+            if (inputId && key) {
+                inputId.value = key;
+            }
+
+            const savedId = document.getElementById("checkedId");
+            if (savedId && inputId && inputId.value !== "") {
+
+                savedId.checked = true; // ID 저장하기를 체크 상태로 유지
+            }
+            if (savedId && inputId) {
+                savedId.addEventListener("change", function () {
+                    if (savedId.checked) {
+                        setCookie("key", inputId.value, 7); // 7일동안 쿠키 보관
+                    } else {
+                        deleteCookie("key");
+                    }
+                });
+                // ID 저장하기 체크상태에서 ID를 입력하는경우 쿠키 저장
+                inputId.addEventListener("keyup", function () {
+                    if (savedId.checked) {
+                        setCookie("key", inputId.value, 7);
+                    }
+                })
+            }
+        });
+
+        //쿠키 저장
+        function setCookie(cookieName, value, exdays) {
+            const exdate = new Date();
+            exdate.setDate(exdate.getDate() + exdays);
+            const cookieValue = encodeURIComponent(value) + ((exdays == null) ? "" : "; expires=" + exdate.toUTCString());
+            document.cookie = cookieName + "=" + cookieValue;
+        }
+
+        //쿠키 삭제
+        function deleteCookie(cookieName) {
+            const expireDate = new Date();
+            expireDate.setDate(expireDate.getDate() - 1);
+            document.cookie = cookieName + "= " + "; expires=" + expireDate.toUTCString();
+        }
+
+        //쿠기 가져오기
+        function getCookie(cookieName) {
+            cookieName = cookieName + '=';
+            const cookieData = document.cookie; //현재 페이지에서 사용가능한 쿠키 가져오기
+            let start = cookieData.indexOf(cookieName); //cookieName 의 시작위치 찾기, 찾지못하면 -1 반환
+            let cookieValue = '';
+            if (start != -1) {
+                start += cookieName.length; //start 는 쿠키 값 시작 위치 가르키기
+                let end = cookieData.indexOf(';', start); //start 위치부터 ;까지의 문자열을 쿠키값으로 추출
+                if (end == -1)
+                    end = cookieData.length; // 세미콜론이 없으면 문자열의 끝까지가 쿠키 값
+                cookieValue = cookieData.substring(start, end);
+            }
+            return decodeURIComponent(cookieValue);
+            // 추출된 쿠키 값을 디코딩해서
+            // 반환. 디코딩은 URL 인코딩된 문자열을 해독하여 원래의 문자열로 되돌리는 작업
+        }
+
+
+    </script>
+
+
     <nav>
         <h1>로그인</h1>
     </nav>
 
-    <form action="#">
+    <form th:action method="post">
 
         <table border="0">
             <tr>
@@ -64,51 +94,32 @@
         </table>
         <input type="submit" value="로그인"/>
         <span>
-                        <label><input type="checkbox" name="auto"/>자동 로그인</label>
-						<a th:href="@{#}">아이디찾기</a>
-						<a th:href="@{#}">비밀번호찾기</a>
-						<a th:href="@{#}">회원가입</a>
-					</span>
+            <label class="save_id">
+                <input type="checkbox" id="checkedId" name="auto"/>
+                <span>아이디 저장</span>
+                <input type="checkbox" id="rememberMe" name="rememberMe"/>
+                <span>자동 로그인</span>
+            </label>
+            <a th:href="@{/member/findId}">아이디찾기</a>
+            <a th:href="@{/member/findPass}">비밀번호찾기</a>
+            <a th:href="@{/member/join}">회원가입</a>
+        </span>
 
+        <div class="social">
+            <a th:href="@{/oauth2/authorization/google}">
+                <img class="google_img" th:src="@{/member/images/google.png}" alt="로그인">
+            </a>
 
-                    <a th:href="@{#}" class="banner"><img src="./images/member_login_banner.jpg" alt="1만원 할인 쿠폰 받기"></a>
-
-				</form>
-				<img src="./images/member_certifi_logo.gif" alt="banner">
-            </div>
-        </main>        
-        <footer>
-            <ul>
-              <li><a th:href="@{#}">회사소개</a></li>
-              <li><a th:href="@{#}">서비스이용약관</a></li>
-              <li><a th:href="@{#}">개인정보처리방침</a></li>
-              <li><a th:href="@{#}">전자금융거래약관</a></li>
-            </ul>
-            <div>
-              <p><img src="../images/footer_logo.png" alt="로고" /></p>
-              <p>
-                <strong>(주)롯데ON</strong><br />
-                서울특별시 송파구 올림픽로 300 롯데월드타워 26층 (역삼동 강남파이낸스센터)<br />
-                대표이사 : 김사무엘상현, 정준호, 강성현<br />
-                사업자등록번호 : 529-85-00774(롯데쇼핑(주) e커머스사업부)<br />
-                통신판매업 신고 : 서울송파 제0158호<br>
-                호스팅 서비스사업자 : 롯데쇼핑(주) e커머스사업부
-              </p>
-              <p>
-                <strong>고객센터</strong><br />
-                Tel : 1899-7000(유료) (평일 09:00~18:00)<br />
-                Fax : 051-123-4567 | E-mail : lotteon@lotte.net<br />
-              </p>
-            </div>
-          </footer>
-    </div>    
-</body>
-
-        <a href="#" class="banner"><img th:src="@{/member/images/member_login_banner.jpg}" alt="1만원 할인 쿠폰 받기"></a>
+            <a th:href="@{/oauth2/authorization/kakao}">
+                <img class="kakao_img" th:src="@{/member/images/kakao.png}" alt="로그인">
+            </a>
+<!--            <a th:href="@{/oauth2/authorization/naver}">-->
+<!--                <img class="naver_img" th:src="@{/member/images/naver.png}" alt="로그인">-->
+<!--            </a>-->
+        </div>
 
     </form>
     <img th:src="@{/member/images/member_certifi_logo.gif}" alt="banner">
 </div>
-
 
 </html>

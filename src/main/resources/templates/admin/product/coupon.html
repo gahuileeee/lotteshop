@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/admin/layout/adminLayout.html}">
+<style>
+    /* 모달 스타일 */
+</style>
+            <section id="admin-product-list" layout:fragment="content">
+                <script>
+                    window.onload = function () {
+                        const code = [[${code}]];
+                        if(code === '100'){
+                            alert('등록이 되었습니다.');
+                        }
+                        const canUse =document.getElementById('canUse');
+                        const end = document.getElementById('end');
+                        canUse.onclick=function (e){
+                            e.preventDefault();
+                            document.location.href='/lotteshop/admin/coupon/register?state=0';
+                        }
+
+                        end.onclick=function (e){
+                            e.preventDefault();
+                            document.location.href='/lotteshop/admin/coupon/register?state=1';
+                        }
+
+
+
+                        const button = document.getElementById('couponButton');
+                        const couponModal = document.getElementById('couponModal');
+                       const closeButton = document.getElementById('closeButton');
+                        const submitCoupon = document.getElementById('submitCoupon');
+                        const form = document.getElementById('formCoupon')
+                        // 각 입력 필드에 대한 값을 가져옵니다.
+                        const couponName = document.getElementsByName('couponName')[0];
+                        const discount = document.getElementsByName('discount')[0];
+                        const min = document.getElementsByName('min')[0];
+                        const max = document.getElementsByName('max')[0];
+                        const endDate = document.getElementsByName('endDate')[0];
+
+                        button.onclick = function (e) {
+                            couponModal.style.display = 'block';
+                        }
+
+                        closeButton.onclick = function (e) {
+                            couponModal.style.display = 'none';
+                        }
+
+                        submitCoupon.onclick = async function (e) {
+                            e.preventDefault();
+                            // 유효성 검사를 수행합니다.
+                            if (!couponName.value || !discount.value || !min.value || !max.value || !endDate.value) {
+                                alert("모든 필드를 입력해주세요.");
+                                return;
+                            }
+                            if (discount.value > 100) {
+                                alert('할인율은 100을 초괴할 수 없습니다.')
+                                return;
+                            }
+                            if (discount.value <= 0) {
+                                alert('할인율을 0 이상 입력해주세요.')
+                                return;
+                            }
+
+                            if (max.value <= 0) {
+                                alert('최대 할인 금액을 0 이상 입력해주세요.')
+                                return;
+                            }
+                            form.submit();
+                        }
+
+                        document.addEventListener('input', function (e){
+                                if (e.target === discount){
+                                    const value = e.target.value;
+                                    // 입력된 값이 숫자가 아니라면 값을 지웁니다.
+                                    if (isNaN(value)) {
+                                        e.target.value = '';
+                                    }
+                                }
+
+                            if (e.target === min){
+                                const value = e.target.value;
+                                // 입력된 값이 숫자가 아니라면 값을 지웁니다.
+                                if (isNaN(value)) {
+                                    e.target.value = '';
+                                }
+                            }
+
+                            if (e.target === max){
+                                const value = e.target.value;
+                                // 입력된 값이 숫자가 아니라면 값을 지웁니다.
+                                if (isNaN(value)) {
+                                    e.target.value = '';
+                                }
+                            }
+                        });
+
+                    }
+                </script>
+
+                <nav>
+                    <h3>쿠폰목록</h3>
+                    <p>
+                        HOME > 상품관리 > <strong>쿠폰관리</strong>
+                    </p>
+                </nav>
+
+                <section>
+                    <!-- 모달 -->
+                    <div id="couponModal" class="couponModal">
+                        <!-- 모달 내용 -->
+                        <div class="couponModal-content">
+                            <span id="closeButton" class="close">&times;</span>
+                            <!-- 여기에 쿠폰 등록 폼 추가 -->
+                            <h4>쿠폰 등록</h4>
+                            <form th:action="@{/admin/coupon/register}" method="post" style="text-align: center; margin-top: 20px;" id="formCoupon">
+                                <table style="margin: 0 auto; height: auto">
+                                    <tr>
+                                        <td>쿠폰이름:</td>
+                                        <td><input type="text" name="couponName" style="padding: 8px;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>할인율:</td>
+                                        <td><input type="text"  name="discount" style="padding: 8px;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>최소 구매 금액:</td>
+                                        <td><input type="text"  name="min" style="padding: 8px;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>최대 할인 금액:</td>
+                                        <td><input type="text"  name="max" style="padding: 8px;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>유효기간:</td>
+                                        <td><input type="date"  name="endDate" style="padding: 8px;"></td>
+                                    </tr>
+                                </table>
+                                <br>
+                                <button id="submitCoupon" type="submit">등록하기</button>
+                            </form>
+                        <br>
+                        </div>
+                    </div>
+                    <div>
+                        <button id="couponButton">쿠폰 등록</button>
+                    </div>
+                    <br>
+
+
+                    <div style="background-color: #f1f0f0 ; margin-bottom: 0">
+                        <br>
+                        <span id="canUse" style="margin-left: 10px;cursor: pointer">유효</span>
+                        <span id="end" style="margin-left: 10px;cursor: pointer">만료</span>
+                    </div>
+
+                    <div style="border: 1px solid #efeeee; height: auto; background-color: #f1f0f0">
+                        <!--쿠폰쓰 -->
+                        <div th:each="coupon , index:${coupons}" style=" margin-bottom: 10px; margin-top: 50px; display: flex; justify-content: center;">
+                            <div style="display: flex; justify-content: space-between; margin-top: 30px; width: 70%; height: auto">
+                                <div style=" width: 70%; height: 120px; display: flex; justify-content: center; align-items: center;">
+                                    <!-- 초록색 박스 -->
+                                    <div style="display: flex; justify-content: space-between; width: 60%;">
+                                        <div style="border: 1px solid #ff0000; width: 70%; height:  auto; background-color: white;">
+                                            <div style="color: #f34c4c; height: auto; margin-left: 5px;  ">
+                                                <p style="font-size: large; font-weight: bolder">[[${coupon.discount}]]%</p>
+                                                <p style="color: black; ">[[${coupon.couponName}]]</p>
+                                                <p style="color: gray">모든 상품 적용</p>
+                                                <p style="color: gray">최소  주문 금액 [[${coupon.min}]]</p>
+                                                <p style="color: gray">최대 할인 금액 [[${coupon.max}]]</p>
+                                                <p style="color: gray">~[[${coupon.endDate}]]까지</p>
+                                            </div>
+                                        </div>
+                                        <div style=" display: flex; justify-content: center;  align-items: center; background-color: red; width: 30%; height: auto;">
+                                            <p style="font-size: x-large; color: white">on</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="  align-items: center;  width: 30%; height: 120px;">
+                                    <p>다운받은 횟수</p>
+                                    <p>[[${coupon.download}]]</p>
+                                </div>
+                            </div>
+                            <br>
+                        </div>
+                        <br>
+                        <br>
+                    </div>
+
+
+                    <!--
+                    <div class="paging">
+                        <span class="prev" th:if="${page.prev}">
+                            <a th:href="@{/admin/product/list(pg=${page.start -1})}"><&nbsp;이전</a>
+                        </span>
+                        <span class="num" th:each="num:${#numbers.sequence(page.start, page.end)}">
+                            <th:block th:if="${num == page.pg}">
+                                 <a th:href="@{/admin/product/list( pg=${num})}" class="on">[[${num}]]</a>
+                            </th:block>
+
+                            <th:block th:if="${num != page.pg}">
+
+                                 <a th:href="@{/admin/product/list( pg=${num})}" >[[${num}]]</a>
+                            </th:block>
+
+                        </span>
+                        <span class="next" th:if="${page.next}">
+                            <a th:href="@{/admin/product/list( pg=${page.end+1})}">다음&nbsp;></a>
+                        </span>
+                        </div>
+                        -->
+                </section>                
+            </section>
+</html>

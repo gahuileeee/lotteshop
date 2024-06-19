@@ -3,6 +3,7 @@ package kr.co.lotte.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
 @ToString
 @Builder
 @Entity
+@Setter
 @Table(name="carts")
 
 public class Carts {
@@ -24,5 +26,8 @@ public class Carts {
 
     @CreationTimestamp
     private LocalDateTime cartProdDate;
+
+    private int prodPrice;
+    private int prodDiscount;
 
 }

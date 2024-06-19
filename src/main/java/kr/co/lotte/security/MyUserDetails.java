@@ -19,20 +19,17 @@ import java.util.Map;
 @Setter
 @Builder
 @ToString
-public class MyUserDetails implements UserDetails, OAuth2User {
+public class MyUserDetails implements UserDetails {
     //entity  선언
     private User user;
-
-    @Override
-    public Map<String, Object> getAttributes() {
-        return null;
-    }
 
     
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
+        if(!"None".equals(user.getRole())) {
             authorities.add(new SimpleGrantedAuthority(user.getRole()));
+        }
         return authorities;
     }
 
@@ -69,11 +66,7 @@ public class MyUserDetails implements UserDetails, OAuth2User {
     public boolean isEnabled() {
         // 계정 활성화 여부 (true: 활성화, false: 비활성화)
         // 회원 탈퇴시 비활성화 시켜야함
-        return true;
+        return !"None".equals(user.getRole());
     }
 
-    @Override
-    public String getName() {
-        return null;
-    }
 }

@@ -2,6 +2,8 @@ package kr.co.lotte.dto;
 
 import lombok.*;
 
+import java.util.Date;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -15,4 +17,9 @@ public class OrderItemsDTO {
     private int itemPrice;
     private int itemDiscount;
     private int itemCount;
+
+    private String excuse;
+
+    private String orderState;
+    private Date orderDate;
 }

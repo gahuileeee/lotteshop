@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.lotte.mapper.AdminCsMapper">
+
+    <!-- admin.cs.faq.view 출력 -->
+    <select id="faqSelectNo" resultType="kr.co.lotte.dto.CsFaqDTO">
+        SELECT * FROM `csfaq`
+        WHERE `no` = #{no}
+    </select>
+
+    <!-- admin.cs.faq 수정 -->
+    <update id="adminFaqUpdate" parameterType="kr.co.lotte.dto.CsFaqDTO">
+        UPDATE `csfaq` SET
+        title=#{title}, content=#{content}
+        WHERE no=#{no}
+    </update>
+
+    <!-- admin.cs.faq 삭제 -->
+    <delete id="adminFaqDelete" parameterType="int">
+        DELETE FROM `csfaq` WHERE no=#{no}
+    </delete>
+
+    <!-- admin.cs.faq 선택삭제 -->
+    <delete id="deleteFaqByIds" parameterType="java.util.List">
+        DELETE FROM csfaq WHERE no IN
+        <foreach item="no" index="index" collection="selectedNo" open="(" separator="," close=")">
+            #{no}
+        </foreach>
+    </delete>
+
+    <!-- admin.cs.faq 글 작성 -->
+    <insert id="adminFaqWrite" parameterType="kr.co.lotte.dto.CsFaqDTO">
+        INSERT INTO `csfaq` (title, cate1, cate2, content)
+        VALUES (#{title}, #{cate1}, #{cate2}, #{content})
+    </insert>
+
+
+
+</mapper>
