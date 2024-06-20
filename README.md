@@ -17,7 +17,7 @@ Spring Boot, Java, HTML5/CSS3/JavaScript, MyBaits, JPA, AWS, CICD, THYMLEAF
 구현한 기능 : Spring Security 구축, 상품 기능(카테고리, 등록, 수정, 찜, 장바구니, 결제, 포인트, 주문내역 보기), 실시간 인기 검색어, 쿠폰 기능, 
 관리자 메인화면, 주문 매출 현황, 광고보기 기능, Exception Handler, Login redirect 
 
-### 간단한 기능 구현 설명
+### 직접 구현한 기능에 대한 간단한 구현 설명
 <details>
   <summary> :scroll: 스프링 시큐리티 설정  </summary>
  <div>
