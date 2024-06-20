@@ -5,43 +5,16 @@
  2) 프로젝트 기간 : 2024-05-15 ~ 2024-05-17
  3) 배경 및 목적 : 실제 업무 환경과 유사하게, 직접 요구사항 명세서를 분석하고 이를 구현함을 목적으로 한다.
  4) 주요기능 : 쇼핑 (장바구니, 바로 구매 , 찜 , 쿠폰 적용 등) , 검색 , 로그인 , 회원가입 , 관리자 (상품 매출 현황 , 상품 현황, 배너/약관 등록 등)
- 5) 배포주소 : http://43.200.184.246:8080/lotteshop/index
- 6) 팀 구성 : 이가희(조장) , 오아람 , 정원구 , 송상도
+ 5) 팀 구성 : 이가희(조장) , 오아람 , 정원구 , 송상도
 
-    기능 시현 영상 : https://www.youtube.com/watch?v=2U5d2RnTh78
-    
+기능 시현 영상 : https://www.youtube.com/watch?v=2U5d2RnTh78
 
-### 프로젝트 버전 업데이트 내역
-0.0.1-SNAPSHOT
+### 사용한 기술
+Spring Boot, Java, HTML5/CSS3/JavaScript, MyBaits, JPA, AWS, CICD, THYMLEAF
 
-0.0.9-SNAPSHOT : 회사 소개 페이지 구현 중, 마이페이지 구현 중, CS 구현 중
+### 프로젝트에서 담당한 기능
+조장으로서 프로젝트 배포, 서버 관리, github CI/CD 파이프라인 구축, ERD 정리 및 전반적인 프로젝트 진행사항을 관리하였습니다.
+구현한 기능 : Spring Security 구축, 상품 기능(카테고리, 등록, 수정, 찜, 장바구니, 결제, 포인트, 주문내역 보기), 실시간 인기 검색어, 쿠폰 기능, 
+관리자 메인화면, 주문 매출 현황, 광고보기 기능, Exception Handler, Login redirect 
 
-0.1.0-SNAPSHOT : 회사 소개 페이지 부분 구현 (80% 이상) , 마이페이지 (포인트, 수정 완료 , 결제 부분 완료), CS 구현
 
-0.1.1-SNAPSHOT : 회사 소개 완료, admin 상품 현황 구현 등
-
-0.1.2-SNAPSHOT : 상품 주문,취소 등 부분 완료 , admin page 구현 (공지사항 완료, 회원 현황 완료, 판매자 현황 구현중)
-
-0.1.2-SNAPSHOT : 상품 상태 우선 완료(추후 css 수정 예정) , admin page 구현 (현황 구현중)
-
-0.1.3-SNAPSHOT : 찜 기능 구현, 리뷰 작성 구현 완료
-
-0.1.4-SNAPSHOT : admin 현황 구현, main page 작업 중, 문의하기 작업 중 
-
-0.1.5-SNAPSHOT : 리뷰 table 및 entity 수정 중, 쿠폰 기능 구현 중
-
-0.1.6-SNAPSHOT : 쿠폰 완료, 약관 부분 완료, 리뷰 수정 완료, faq 다 됨
-
-0.1.7-SNAPSHOT : 관리자 약관 완료, hit 상품 처리, myHome 부분 완료 , product/complete 완료
-
-0.1.8-SNAPSHOT : 환불 사유, 구매 확정 수정, 회사 소개 admin page 수정 완료
-
-0.1.9-SNAPSHOT : 대부분의 기능 구현 완료, 미흡한 기능 보완 및 css 수정 예정
-
-1.0.0-RC : 추가기능 (광고보기) 추가
-
-1.0.1-RC : cs 미완성된 부분 완성 , 상품 view page css 수정
-
-1.0.2-RC : 최종 오류 수정, error page 매핑 완료
-
-1.0.0-RELEASE : 최종본 업로드
