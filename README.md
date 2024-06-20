@@ -19,6 +19,8 @@ Spring Boot, Java, HTML5/CSS3/JavaScript, MyBaits, JPA, AWS, CICD, THYMLEAF
 
 ### 간단한 기능 구현 설명
 :scroll: 스프링 시큐리티 설정
+
+
 우선 Spring boot- Securityd에 Spring Security 선택하여 의존성을 주입함.
 로그인 page와 defaultSeccessUrl 및 로그아웃, 인가 설정 코드를 작성한 SecurityConfig Class를 만들어 @Configuration 처리함.
 이후 UserDetailService 를 구현한 Class를 만들어 해당 사용자가 존재하면 인증 객체 생성하도록 하고, UserDetails를 구현한 Class를 만들어 계정이 갖는 권
@@ -26,6 +28,8 @@ Spring Boot, Java, HTML5/CSS3/JavaScript, MyBaits, JPA, AWS, CICD, THYMLEAF
 Security Config Class의 인가 설정 코드(requestMatchers("/").permitAll 과 같은) 를 통하여, 최고 관리자, 중간 관리자, 일반 사용자 페이지를 나누었음
 
 :scroll: 서버 및 CICD
+
+
 AWS 에서 instance 생성 후 , putty 및 file zillar 를 통해 작업한 파일의 jar 파일을 등록 후 먼저 java -jar로 실행, 오류가 없는 것을 확인 후
 nohup으로 실행하여 초기 배포를 하였음.
 이후 AWS에서 고정 IP 작업 , AWS S3 구축, 필요한 설정 파일 구축 (.github > worklows > deploy.yml , scripts > deploy.sh, appspec.yml) , github
@@ -35,6 +39,8 @@ secrets and variables - actions에서 APP_PROPERTIES로 application.yml 파일 �
 server가 계속 down 되는 문제가 있어 swap 설정을 하여 이를 해결함.
 
 :scroll: 상품 기능 (카테고리, 등록, 수정 , 찜, 장바구니, 결제, 포인트, 주문내역 ) 
+
+
 원칙적으로 __카테고리__에 대분류, 중분류, 소분류가 있다면 3 개의 table로 나눠 처리하는 것이 맞아 보이지만 팀원분들 이 이를 다루기 힘들어하여 하나의 talbe 내
 에서 처리함. (ex pk:1 , 의류(컬럼1) , 여성(컬럼2) , 신발(컬럼3) ). 따라서 상품 등록 시 카테고리를 출력할 때, 먼저 모든 카테고리의 컬럼1 을 출력 후 set형태로
 받아 중복 제거하고, 대분류를 선택하 면 동적으로 select * from 카테고리 where 컬럼1. = 선택한 컬럼 한 후 set으로 중복처리 하여 중분류를 표기하는 식으 로
@@ -72,12 +78,16 @@ ct 재고량 변경, 쿠폰 사용시 변경, 포인트 사용시 변경, order 
 
 
 :scroll:실시간 인기 검색어
+
+
 DB 성능을 위해 캐싱을 처리 해야 하지만, 시간 관계상 기본적 기능만 구현하였음.
 먼저 사용자가 검색을 하면, 욕설 filter를 거쳐 DB에 insert or update 함(없는 키워드면 insert, 있는 키워드면 검색량을 ++ 하였음.)
 메인 화면에서 10초마다 검색어 table을 검색 순으로 조회하여 가장 많이 검색 된 10개를 상단에 띄우는 방식으로 구현하였음.
 
 
 :scroll:쿠폰 기능 (등록, 사용)
+
+
 쿠폰 table을 만든 후, 관리자가 등록하게 만들었음.(기본적 유효성 검사 완료) 그리고 download coupon table을 만들어 다운로드 현황을 관리함.
 user 해당 쿠폰을 다운로드 하면, userId, 쿠폰 pk 등을 insert하였고, 해당 user가 이미 다운로드 한 쿠폰이라면 다시 다운로드 하지 못하게 설계함.
 또한 회원이 로그인 할 때 download coupon table을 조회하여 현재 날짜와 비교하여 만료된 경우 자동적으로 상태값을 변경시켜 사용하지 못하게 만들었음.
@@ -85,27 +95,37 @@ user 해당 쿠폰을 다운로드 하면, userId, 쿠폰 pk 등을 insert하였
 변경시켰음.
 
 :scroll:관리자 메인 화면
+
+
 Authentication 을 통해 로그인 한 user의 role에 따라 최고 관리자, 중간 관리자가 볼 수 있는 page를 나누었음. 최고 관리자의 경우 모든 상품 및 모든 글에 대한
 현황이 보이도록 구현함. 중간 관리자의 경우 자신의 상품 및 자신의 상품에 대한 문의글 현황만 보이도록 구현함.
 
 
 :scroll:관리자 : 주문 매출 현황
+
+
 마찬가지로 Authentication을 통해 user의 role에 따라 최고관리자, 중간 관리자의 매출 표를 달리 표현하였음.
 Chart.js를 활용하여 그래프로 나타내었고, 현재 날짜를 Local.DateTImeNow()를 통해 확인하여 일주일, 월간, 연간 날짜 별 조회를 가능하게 만들었음.
 
 
 :scroll:광고보기 기능
+
+
 Iframe통해 유튜브 영상을 해당 페이지에 넣었고, src의 parameter에 autoplay=1 , controls=0, mute=1을 넣어 해당 페이지 들어갈 시 바로 영상이 재생되도
 록 하였음.
 Script 처리로 해당 user가 10초 이상 머무를 시 포인트 적립 button을 활성화 시켰고 login을 하지 않은 경우 눌러도 login을 하라는 alert를 띄었고, login을 한
 경우 point talbe을 조회하여 user가 현재 날짜에 포인트를 적립하지 않은 경우에만 point 적립 안내문구를 띄우고 DB 에 이를 반영하였음.
 
 :scroll:Exception Handler
+
+
 시간 관계상 Exception의 종류 별 처리는 하지 못하였고 모든 Exception에 대해 @ExceptionHandle annotation을 이용하여 직접 제작한 오류 페
 이지로 redirect 처리를 하였음.
 
 
 :scroll:Login redirect
+
+
 로그인 성공 시 요청한 이전 페이지로 redirect 되는 기능을 구현함 (ex 상품뷰 페이지에서 > 로그인 > 성공 시 다시 상품뷰 페이지로 돌아가게)
 우선 login Controller에서 HttpServletRequest request.getHeader("Referer"))을 이용하여 이전 요청 페이지 주소를 받아 이를 session에
 저장함. 그 후 로그인 성공 시 해당 페이지로 redirect 시키고 해당 session을 삭제 처리하였음. 또한 session에 저장한 주소 값이 있으면 새로 updat
