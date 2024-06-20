@@ -18,14 +18,21 @@ Spring Boot, Java, HTML5/CSS3/JavaScript, MyBaits, JPA, AWS, CICD, THYMLEAF
 관리자 메인화면, 주문 매출 현황, 광고보기 기능, Exception Handler, Login redirect 
 
 ### 간단한 기능 구현 설명
-:scroll: 스프링 시큐리티 설정
-
-
+<details>
+  <summary> :scroll: 스프링 시큐리티 설정  </summary>
+ <div>
+    <ul>
+      <li>
 우선 Spring boot- Securityd에 Spring Security 선택하여 의존성을 주입함.
 로그인 page와 defaultSeccessUrl 및 로그아웃, 인가 설정 코드를 작성한 SecurityConfig Class를 만들어 @Configuration 처리함.
 이후 UserDetailService 를 구현한 Class를 만들어 해당 사용자가 존재하면 인증 객체 생성하도록 하고, UserDetails를 구현한 Class를 만들어 계정이 갖는 권
 한 목록, password, userName, 계정 만료 여부 등을 조회 할 method들을 작성해 주었음.
 Security Config Class의 인가 설정 코드(requestMatchers("/").permitAll 과 같은) 를 통하여, 최고 관리자, 중간 관리자, 일반 사용자 페이지를 나누었음
+      </li>
+    </ul>
+  </div>
+</details>
+
 
 :scroll: 서버 및 CICD
 
